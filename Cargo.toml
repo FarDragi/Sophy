@@ -1,0 +1,20 @@
+[package]
+name = "sophy_bot"
+version = "0.1.0"
+authors = ["Gabriel-Paulucci <gabrielpauluccimunizmendes@gmail.com>"]
+edition = "2018"
+resolver = "2"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+dotenv = "0.15.0"
+
+[dependencies.serenity]
+version = "0.10.9"
+default-features = false
+features = ["client", "gateway", "rustls_backend", "model", "unstable_discord_api"]
+
+[dependencies.tokio]
+version = "1.12.0"
+features = ["macros", "rt-multi-thread"]
