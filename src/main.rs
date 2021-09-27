@@ -1,22 +1,47 @@
-use config::BotConfig;
+mod commands;
+mod config;
+mod handler;
+
+use std::{env::args, sync::Arc};
+
+use commands::config_commands;
+use config::{Config, ConfigKey};
 use dotenv::dotenv;
 use handler::DefaultHandler;
 use serenity::Client;
 
-mod config;
-mod handler;
+#[macro_use]
+extern crate serenity;
 
 #[tokio::main]
 async fn main() {
     dotenv().ok();
 
-    let bot_config = BotConfig::default();
+    let mut config = Config::default();
 
-    let mut client = Client::builder(bot_config.token)
+    for arg in args() {
+        if arg.as_str() == "update-commands" {
+            println!("Update global commands");
+            config.update_commands();
+        }
+    }
+
+    let mut client = Client::builder(&config.token)
         .event_handler(DefaultHandler)
-        .application_id(bot_config.application_id)
+        .application_id(config.application_id)
         .await
         .expect("Fail create client");
+
+    let config = Arc::new(config);
+
+    {
+        let mut data = client.data.write().await;
+        data.insert::<ConfigKey>(config.clone());
+    }
+
+    {
+        config_commands(&config, &client.cache_and_http.http).await;
+    }
 
     if let Err(err) = client.start().await {
         println!("{:?}", &err);
