@@ -4,11 +4,14 @@ mod handler;
 
 use std::{env::args, sync::Arc};
 
-use commands::{config_commands, get_all_commands};
+use commands::config_commands;
 use config::{Config, ConfigKey};
 use dotenv::dotenv;
 use handler::DefaultHandler;
 use serenity::Client;
+
+#[macro_use]
+extern crate serenity;
 
 #[tokio::main]
 async fn main() {
@@ -37,8 +40,7 @@ async fn main() {
     }
 
     {
-        let commands = get_all_commands();
-        config_commands(&config, &client.cache_and_http.http, &commands).await;
+        config_commands(&config, &client.cache_and_http.http).await;
     }
 
     if let Err(err) = client.start().await {

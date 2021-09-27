@@ -1,35 +1,33 @@
-mod base;
+mod model;
+mod none;
 mod test;
 
-pub use base::BaseCommand;
-use serenity::{http::Http, model::interactions::application_command::ApplicationCommand};
+use serenity::{
+    client::Context,
+    http::Http,
+    model::interactions::application_command::{ApplicationCommand, ApplicationCommandInteraction},
+    Error,
+};
 
-use crate::{commands::test::TestCommand, config::Config};
+use crate::config::Config;
 
-pub fn get_all_commands() -> Vec<impl BaseCommand + Default> {
-    vec![TestCommand]
-}
+use self::{
+    model::{ConfigCommand, RunCommand},
+    none::NoneCommand,
+    test::TestCommand,
+};
 
-pub async fn config_commands(
-    config: &Config,
-    http: &Http,
-    commands: &[impl BaseCommand + Default],
-) {
+pub async fn config_commands(config: &Config, http: &Http) {
     if config.update_commands {
-        let application_command =
+        let application_commands =
             ApplicationCommand::set_global_application_commands(http, |application_commands| {
-                for command in commands {
-                    application_commands.create_application_command(|application_command| {
-                        command.default_config(application_command);
-                        command.config(application_command)
-                    });
-                }
+                TestCommand::create_command(application_commands);
 
                 application_commands
             })
             .await;
 
-        match application_command {
+        match application_commands {
             Err(err) => {
                 panic!("{:#?}", err)
             }
@@ -40,4 +38,24 @@ pub async fn config_commands(
             }
         };
     }
+}
+
+pub async fn run_command(
+    ctx: &Context,
+    command_interaction: &ApplicationCommandInteraction,
+) -> Result<(), Error> {
+    match command_interaction.data.name.as_str() {
+        "test" => {
+            TestCommand::default()
+                .start(ctx, command_interaction)
+                .await?
+        }
+        _ => {
+            NoneCommand::default()
+                .start(ctx, command_interaction)
+                .await?
+        }
+    }
+
+    Ok(())
 }

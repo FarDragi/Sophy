@@ -1,23 +1,37 @@
-use serenity::builder::CreateApplicationCommand;
+use serenity::{
+    builder::CreateApplicationCommand,
+    client::Context,
+    model::interactions::{
+        application_command::ApplicationCommandInteraction,
+        InteractionResponseType::ChannelMessageWithSource,
+    },
+    Error,
+};
 
-use super::BaseCommand;
+use super::model::{ConfigCommand, RunCommand};
 
 #[derive(Default)]
 pub struct TestCommand;
 
-impl BaseCommand for TestCommand {
-    fn config<'a>(
+impl ConfigCommand for TestCommand {
+    fn config(application_command: &mut CreateApplicationCommand) {
+        application_command.name("test").description("Test command");
+    }
+}
+
+#[async_trait]
+impl RunCommand for TestCommand {
+    async fn run(
         &self,
-        command: &'a mut CreateApplicationCommand,
-    ) -> &'a mut CreateApplicationCommand {
-        command
-    }
-
-    fn name(&self) -> &'static str {
-        "teste"
-    }
-
-    fn description(&self) -> &'static str {
-        "Command teste"
+        ctx: &Context,
+        interaction: &ApplicationCommandInteraction,
+    ) -> Result<(), Error> {
+        interaction
+            .create_interaction_response(ctx, |response| {
+                response
+                    .kind(ChannelMessageWithSource)
+                    .interaction_response_data(|msg| msg.content("Test"))
+            })
+            .await
     }
 }
