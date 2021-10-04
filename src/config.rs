@@ -8,6 +8,7 @@ pub struct Config {
     pub application_id: u64,
     pub owner_guild: GuildId,
     pub update_commands: bool,
+    pub database_connection: String,
 }
 
 impl Default for Config {
@@ -30,11 +31,15 @@ impl Default for Config {
             )
         };
 
+        let database_connection =
+            var("SOPHY_DATABASE_CONNECTION").expect("Database connection not found");
+
         Self {
             token,
             application_id,
             owner_guild,
             update_commands: false,
+            database_connection,
         }
     }
 }
