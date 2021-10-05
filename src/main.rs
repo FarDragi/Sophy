@@ -1,17 +1,22 @@
 mod commands;
 mod config;
+mod database;
 mod handler;
 
 use std::{env::args, sync::Arc};
 
 use commands::config_commands;
 use config::{Config, ConfigKey};
+use database::bootstrap_database;
 use dotenv::dotenv;
 use handler::DefaultHandler;
 use serenity::Client;
 
 #[macro_use]
 extern crate serenity;
+
+#[macro_use]
+extern crate lazy_static;
 
 #[tokio::main]
 async fn main() {
@@ -25,6 +30,8 @@ async fn main() {
             config.update_commands();
         }
     }
+
+    bootstrap_database(&config).await;
 
     let mut client = Client::builder(&config.token)
         .event_handler(DefaultHandler)
