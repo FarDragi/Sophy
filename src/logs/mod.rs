@@ -18,9 +18,8 @@ pub fn bootstrap_logger() {
 
             writeln!(
                 buf,
-                "[{}] [{} {}]: {}",
+                "[{}] [{}]: {}",
                 date.format("%Y-%m-%d %H:%M:%S").to_string(),
-                record.target(),
                 level_style.value(level),
                 record.args()
             )
