@@ -2,6 +2,7 @@ mod commands;
 mod config;
 mod database;
 mod handler;
+mod logs;
 
 use std::{env::args, sync::Arc};
 
@@ -10,19 +11,27 @@ use config::{Config, ConfigKey};
 use database::bootstrap_database;
 use dotenv::dotenv;
 use handler::DefaultHandler;
+use logs::bootstrap_logger;
 use serenity::Client;
-
-#[macro_use]
-extern crate serenity;
 
 #[macro_use]
 extern crate lazy_static;
 
+#[macro_use]
+extern crate log;
+
+#[macro_use]
+extern crate serenity;
+
 #[tokio::main]
 async fn main() {
+    bootstrap_logger();
+
     dotenv().ok();
 
     let mut config = Config::default();
+
+    info!("Ola teste");
 
     for arg in args() {
         if arg.as_str() == "update-commands" {
