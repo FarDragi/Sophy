@@ -31,8 +31,6 @@ async fn main() {
 
     let mut config = Config::default();
 
-    info!("Ola teste");
-
     for arg in args() {
         if arg.as_str() == "update-commands" {
             println!("Update global commands");
