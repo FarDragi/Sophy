@@ -33,7 +33,7 @@ pub async fn config_commands(config: &Config, http: &Http) {
             }
             Ok(cmds) => {
                 for cmd in cmds {
-                    println!("Update {} command", cmd.name)
+                    info!("Update {} command", cmd.name)
                 }
             }
         };
@@ -44,6 +44,8 @@ pub async fn run_command(
     ctx: &Context,
     command_interaction: &ApplicationCommandInteraction,
 ) -> Result<(), Error> {
+    info!("Run command {}", command_interaction.data.name);
+
     match command_interaction.data.name.as_str() {
         "test" => {
             TestCommand::default()

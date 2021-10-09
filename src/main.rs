@@ -33,7 +33,7 @@ async fn main() {
 
     for arg in args() {
         if arg.as_str() == "update-commands" {
-            println!("Update global commands");
+            info!("Update global commands");
             config.update_commands();
         }
     }
@@ -58,6 +58,6 @@ async fn main() {
     }
 
     if let Err(err) = client.start().await {
-        println!("{:?}", &err);
+        error!("{:?}", &err);
     }
 }
