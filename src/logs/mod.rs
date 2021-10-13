@@ -26,7 +26,7 @@ pub fn bootstrap_logger() {
         })
         .filter_level(LevelFilter::Off)
         .filter_module("serenity", LevelFilter::Warn)
-        .filter_module("sophy_bot", LevelFilter::Info)
+        .filter_module("sophy_bot", LevelFilter::Debug)
         .init();
 }
 

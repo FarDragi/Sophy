@@ -1,15 +1,17 @@
+mod cli;
 mod commands;
 mod config;
 mod database;
 mod handler;
 mod logs;
 
-use std::{env::args, sync::Arc};
+use std::sync::Arc;
 
+use clap::Clap;
+use cli::Args;
 use commands::config_commands;
 use config::{Config, ConfigKey};
 use database::bootstrap_database;
-use dotenv::dotenv;
 use handler::DefaultHandler;
 use logs::bootstrap_logger;
 use serenity::Client;
@@ -27,16 +29,9 @@ extern crate serenity;
 async fn main() {
     bootstrap_logger();
 
-    dotenv().ok();
-
     let mut config = Config::default();
-
-    for arg in args() {
-        if arg.as_str() == "update-commands" {
-            info!("Update global commands");
-            config.update_commands();
-        }
-    }
+    let args = Args::parse();
+    args.aplay_configs(&mut config);
 
     bootstrap_database(&config).await;
 

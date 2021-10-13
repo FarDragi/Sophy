@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use dotenv::var;
+use dotenv::{dotenv, var};
 use serenity::{model::id::GuildId, prelude::TypeMapKey};
 
 pub struct Config {
@@ -13,6 +13,8 @@ pub struct Config {
 
 impl Default for Config {
     fn default() -> Self {
+        dotenv().ok();
+
         let token = var("SOPHY_TOKEN").expect("Token not found");
 
         let application_id = {
