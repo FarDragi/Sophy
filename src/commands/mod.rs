@@ -44,15 +44,18 @@ pub async fn run_command(
     ctx: &Context,
     command_interaction: &ApplicationCommandInteraction,
 ) -> Result<(), Error> {
-    info!("Run command {}", command_interaction.data.name);
+    let name = command_interaction.data.name.as_str();
 
-    match command_interaction.data.name.as_str() {
+    info!("Run command {}", name);
+
+    match name {
         "test" => {
             TestCommand::default()
                 .start(ctx, command_interaction)
                 .await?
         }
         _ => {
+            warn!("Command {} not found", name);
             NoneCommand::default()
                 .start(ctx, command_interaction)
                 .await?

@@ -4,8 +4,13 @@ mod config;
 mod database;
 mod handler;
 mod logs;
+pub mod states;
+pub mod utils;
 
-use std::sync::Arc;
+use std::{
+    sync::{Arc, Mutex},
+    time::Duration,
+};
 
 use clap::Clap;
 use cli::Args;
@@ -15,6 +20,8 @@ use database::bootstrap_database;
 use handler::DefaultHandler;
 use logs::bootstrap_logger;
 use serenity::Client;
+use states::shards::{Shards, ShardsKey};
+use tokio::time::sleep;
 
 #[macro_use]
 extern crate lazy_static;
@@ -52,7 +59,40 @@ async fn main() {
         config_commands(&config, &client.cache_and_http.http).await;
     }
 
-    if let Err(err) = client.start().await {
+    {
+        let shard_manager = client.shard_manager.clone();
+
+        let shards = Arc::new(Mutex::new(Shards::default()));
+
+        {
+            let mut data = client.data.write().await;
+            data.insert::<ShardsKey>(shards.clone());
+        }
+
+        tokio::spawn(async move {
+            loop {
+                sleep(Duration::from_secs(30)).await;
+
+                {
+                    let shard_manager_lock = shard_manager.lock().await;
+                    let runners = shard_manager_lock.runners.lock().await;
+
+                    let mut shards_lock = shards.lock().unwrap();
+
+                    for (id, runner) in runners.iter() {
+                        debug!(
+                            "Shard [{}] is {} with a latency of {:?}",
+                            id, runner.stage, runner.latency
+                        );
+
+                        shards_lock.runners.insert(id.0, runner.latency);
+                    }
+                }
+            }
+        });
+    }
+
+    if let Err(err) = client.start_autosharded().await {
         error!("{:?}", &err);
     }
 }
