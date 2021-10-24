@@ -1,6 +1,6 @@
 use rbatis::rbatis::Rbatis;
 
-use crate::config::Config;
+use crate::states::config::Config;
 
 lazy_static! {
     static ref DATABASE: Rbatis = Rbatis::new();

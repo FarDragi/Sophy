@@ -3,9 +3,7 @@ use serenity::{
     model::interactions::application_command::ApplicationCommandInteraction, Error,
 };
 
-use crate::utils::constants::colors::YELLOW;
-
-use super::model::RunCommand;
+use crate::{models::commands::RunCommand, utils::constants::colors::YELLOW};
 
 #[derive(Default)]
 pub struct NoneCommand;
@@ -22,8 +20,8 @@ impl RunCommand for NoneCommand {
         embed.color(YELLOW);
 
         interaction
-            .create_interaction_response(ctx, |x| {
-                x.interaction_response_data(|x| x.add_embed(embed))
+            .create_interaction_response(ctx, |response| {
+                response.interaction_response_data(|msg| msg.add_embed(embed))
             })
             .await?;
 

@@ -1,6 +1,6 @@
 use clap::{AppSettings, Clap};
 
-use crate::config::Config;
+use crate::states::config::Config;
 
 #[derive(Clap)]
 #[clap(setting = AppSettings::ColoredHelp)]

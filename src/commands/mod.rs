@@ -1,4 +1,3 @@
-mod model;
 mod none;
 mod test;
 
@@ -9,13 +8,12 @@ use serenity::{
     Error,
 };
 
-use crate::config::Config;
-
-use self::{
-    model::{ConfigCommand, RunCommand},
-    none::NoneCommand,
-    test::TestCommand,
+use crate::{
+    models::commands::{ConfigCommand, RunCommand},
+    states::config::Config,
 };
+
+use self::{none::NoneCommand, test::TestCommand};
 
 pub async fn config_commands(config: &Config, http: &Http) {
     if config.update_commands {

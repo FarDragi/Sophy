@@ -8,7 +8,7 @@ use serenity::{
     Error,
 };
 
-use super::model::{ConfigCommand, RunCommand};
+use crate::models::commands::{ConfigCommand, RunCommand};
 
 #[derive(Default)]
 pub struct TestCommand;

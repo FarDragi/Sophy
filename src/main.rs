@@ -1,9 +1,9 @@
 mod cli;
 mod commands;
-mod config;
 mod database;
 mod handler;
 mod logs;
+pub mod models;
 pub mod states;
 pub mod utils;
 
@@ -15,12 +15,14 @@ use std::{
 use clap::Clap;
 use cli::Args;
 use commands::config_commands;
-use config::{Config, ConfigKey};
 use database::bootstrap_database;
 use handler::DefaultHandler;
 use logs::bootstrap_logger;
 use serenity::Client;
-use states::shards::{Shards, ShardsKey};
+use states::{
+    config::{Config, ConfigKey},
+    shards::{Shards, ShardsKey},
+};
 use tokio::time::sleep;
 
 #[macro_use]
