@@ -10,8 +10,12 @@ pub struct DefaultHandler;
 
 #[async_trait]
 impl EventHandler for DefaultHandler {
-    async fn ready(&self, _ctx: Context, data_about_bot: Ready) {
-        info!("{} is Connected!", data_about_bot.user.tag());
+    async fn ready(&self, ctx: Context, data_about_bot: Ready) {
+        info!(
+            "{} is connected! Shard [{}]",
+            data_about_bot.user.tag(),
+            ctx.shard_id
+        );
     }
 
     async fn interaction_create(&self, ctx: Context, interaction: Interaction) {

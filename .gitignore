@@ -3,3 +3,6 @@
 
 # Configs
 .env
+
+# Logs
+sqlx-data.json

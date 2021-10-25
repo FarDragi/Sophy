@@ -24,12 +24,7 @@ features = ["client", "gateway", "rustls_backend", "model", "unstable_discord_ap
 
 [dependencies.tokio]
 version = "1.12.0"
-features = ["macros", "rt-multi-thread"]
-
-[dependencies.rbatis]
-version = "2.1.5"
-default-features = false
-features = ["postgres"]
+features = ["macros", "rt-multi-thread", "sync", "parking_lot"]
 
 [dependencies.refinery]
 version = "0.7.0"
@@ -38,4 +33,4 @@ features = ["postgres"]
 [dependencies.sqlx]
 version = "0.5.9"
 default-features = false
-features = ["postgres", "runtime-async-std-rustls"]
+features = ["macros", "postgres", "runtime-async-std-rustls"]

@@ -2,8 +2,9 @@ mod models;
 
 use std::{str::FromStr, thread};
 
-use rbatis::rbatis::Rbatis;
 use refinery::config::Config as RefineryConfig;
+use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
+use tokio::sync::OnceCell;
 
 use crate::states::config::Config;
 
@@ -12,15 +13,19 @@ mod embedded {
     embed_migrations!("./src/database/scripts");
 }
 
-lazy_static! {
-    static ref DATABASE: Rbatis = Rbatis::new();
-}
+static POOL: OnceCell<Pool<Postgres>> = OnceCell::const_new();
 
 async fn init_database(config: &Config) {
-    DATABASE
-        .link(&config.database_connection)
-        .await
-        .expect("Fail create database connection");
+    POOL.get_or_init(|| async {
+        PgPoolOptions::new()
+            .max_connections(5)
+            .connect(&config.database_connection)
+            .await
+            .expect("Fail create pool database connection")
+    })
+    .await;
+
+    info!("Database is connected!");
 }
 
 async fn migration_database(config: &Config) {
@@ -54,6 +59,6 @@ pub async fn bootstrap_database(config: &Config) {
     init_database(config).await;
 }
 
-pub fn get_database() -> &'static Rbatis {
-    &DATABASE
+pub fn get_database() -> &'static Pool<Postgres> {
+    POOL.get().unwrap()
 }

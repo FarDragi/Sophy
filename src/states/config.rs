@@ -34,8 +34,7 @@ impl Default for Config {
             )
         };
 
-        let database_connection =
-            var("SOPHY_DATABASE_CONNECTION").expect("Database connection not found");
+        let database_connection = var("DATABASE_URL").expect("Database connection not found");
 
         Self {
             token,

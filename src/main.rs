@@ -26,9 +26,6 @@ use states::{
 use tokio::time::sleep;
 
 #[macro_use]
-extern crate lazy_static;
-
-#[macro_use]
 extern crate log;
 
 #[macro_use]
