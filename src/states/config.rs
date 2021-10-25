@@ -9,6 +9,7 @@ pub struct Config {
     pub owner_guild: GuildId,
     pub update_commands: bool,
     pub database_connection: String,
+    pub migrate: bool,
 }
 
 impl Default for Config {
@@ -42,13 +43,8 @@ impl Default for Config {
             owner_guild,
             update_commands: false,
             database_connection,
+            migrate: false,
         }
-    }
-}
-
-impl Config {
-    pub fn update_commands(&mut self) {
-        self.update_commands = true;
     }
 }
 

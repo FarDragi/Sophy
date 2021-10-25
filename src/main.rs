@@ -82,10 +82,13 @@ async fn main() {
                     let mut shards_lock = shards.lock().unwrap();
 
                     for (id, runner) in runners.iter() {
-                        debug!(
-                            "Shard [{}] is {} with a latency of {:?}",
-                            id, runner.stage, runner.latency
-                        );
+                        let latency = if let Some(latency) = runner.latency {
+                            format!("a latency of {:?}", latency)
+                        } else {
+                            "no latency".to_string()
+                        };
+
+                        debug!("Shard [{}] is {} with {}", id, runner.stage, latency);
 
                         shards_lock.runners.insert(id.0, runner.latency);
                     }

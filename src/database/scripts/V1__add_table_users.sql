@@ -1,3 +1,3 @@
-CREATE TABLE IF NOT EXISTS bot.users (
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL
 )
