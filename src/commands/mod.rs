@@ -9,6 +9,7 @@ use serenity::{
 };
 
 use crate::{
+    database::functions::user::register_user,
     models::commands::{ConfigCommand, RunCommand},
     states::config::Config,
 };
@@ -45,6 +46,8 @@ pub async fn run_command(
     let name = command_interaction.data.name.as_str();
 
     info!("Run command {}", name);
+
+    register_user(command_interaction.member.as_ref().unwrap().user.id.0).await;
 
     match name {
         "test" => {

@@ -1,9 +1,10 @@
-mod models;
+pub mod functions;
+pub mod models;
 
-use std::{str::FromStr, thread};
+use std::{str::FromStr, thread, time::Duration};
 
 use refinery::config::Config as RefineryConfig;
-use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
+use sea_orm::{ConnectOptions, Database, DatabaseConnection};
 use tokio::sync::OnceCell;
 
 use crate::states::config::Config;
@@ -13,17 +14,22 @@ mod embedded {
     embed_migrations!("./src/database/scripts");
 }
 
-static POOL: OnceCell<Pool<Postgres>> = OnceCell::const_new();
+static DATABASE: OnceCell<DatabaseConnection> = OnceCell::const_new();
 
 async fn init_database(config: &Config) {
-    POOL.get_or_init(|| async {
-        PgPoolOptions::new()
-            .max_connections(5)
-            .connect(&config.database_connection)
-            .await
-            .expect("Fail create pool database connection")
-    })
-    .await;
+    DATABASE
+        .get_or_init(|| async {
+            let mut opt = ConnectOptions::new(config.database_connection.to_string());
+            opt.min_connections(5)
+                .max_connections(15)
+                .connect_timeout(Duration::from_secs(8))
+                .idle_timeout(Duration::from_secs(8));
+
+            Database::connect(opt)
+                .await
+                .expect("Fail create databse connection")
+        })
+        .await;
 
     info!("Database is connected!");
 }
@@ -59,6 +65,6 @@ pub async fn bootstrap_database(config: &Config) {
     init_database(config).await;
 }
 
-pub fn get_database() -> &'static Pool<Postgres> {
-    POOL.get().unwrap()
+pub fn get_database() -> &'static DatabaseConnection {
+    DATABASE.get().unwrap()
 }
