@@ -1,0 +1,4 @@
+CREATE TABLE xp (
+    user_id BIGINT UNSIGNED NOT NULL PRIMARY KEY,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+)

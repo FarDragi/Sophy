@@ -1,5 +1,6 @@
 # Folders
 /target
+.vscode
 
 # Configs
 .env

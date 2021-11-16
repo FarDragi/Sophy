@@ -1,9 +1,27 @@
 use sea_orm::{ActiveModelTrait, Set};
 
-use crate::database::{get_database, models::users};
+use crate::{
+    database::{get_database, schemas::users},
+    error::{AppErr, AppResult},
+};
 
-pub async fn register_user(id: u64) {
-    let user = users::ActiveModel { id: Set(id as i64) };
+pub type UserModel = users::ActiveModel;
 
-    let result = user.insert(get_database()).await;
+pub struct UserInput {
+    pub id: u64,
+    pub name: String,
+}
+
+pub async fn register_user(input: UserInput) -> AppResult<UserModel> {
+    let user = UserModel {
+        id: Set(input.id as i64),
+        name: Set(input.name),
+    };
+
+    let user = user
+        .insert(get_database())
+        .await
+        .map_err(AppErr::Database)?;
+
+    Ok(user)
 }

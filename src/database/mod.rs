@@ -1,11 +1,11 @@
 pub mod functions;
-pub mod models;
+pub mod schemas;
 
-use std::{str::FromStr, thread, time::Duration};
+use std::{process::exit, str::FromStr, time::Duration};
 
 use refinery::config::Config as RefineryConfig;
 use sea_orm::{ConnectOptions, Database, DatabaseConnection};
-use tokio::sync::OnceCell;
+use tokio::{sync::OnceCell, task};
 
 use crate::states::config::Config;
 
@@ -38,8 +38,8 @@ async fn migration_database(config: &Config) {
     let mut config =
         RefineryConfig::from_str(&config.database_connection).expect("Fail convert database url");
 
-    let result = thread::spawn(move || embedded::migrations::runner().run(&mut config))
-        .join()
+    let result = task::spawn_blocking(move || embedded::migrations::runner().run(&mut config))
+        .await
         .expect("Fail run refinery");
 
     match result {
@@ -49,12 +49,19 @@ async fn migration_database(config: &Config) {
                 warn!("No migrate to effectuate");
             } else {
                 for migration in migrates {
-                    debug!("{}", migration.name());
+                    debug!(
+                        "Aplay {}{}__{}",
+                        migration.prefix(),
+                        migration.version(),
+                        migration.name()
+                    );
                 }
             }
         }
         Err(err) => error!("{:?}", err),
     }
+
+    exit(0)
 }
 
 pub async fn bootstrap_database(config: &Config) {

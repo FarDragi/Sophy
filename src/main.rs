@@ -1,6 +1,7 @@
 mod cli;
 mod commands;
 mod database;
+mod error;
 mod handler;
 mod logs;
 pub mod models;

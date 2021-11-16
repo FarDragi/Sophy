@@ -2,3 +2,4 @@
 
 pub use super::refinery_schema_history::Entity as RefinerySchemaHistory;
 pub use super::users::Entity as Users;
+pub use super::xp::Entity as Xp;

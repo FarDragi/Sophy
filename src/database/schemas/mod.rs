@@ -4,3 +4,4 @@ pub mod prelude;
 
 pub mod refinery_schema_history;
 pub mod users;
+pub mod xp;

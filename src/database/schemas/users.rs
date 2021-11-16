@@ -7,16 +7,18 @@ use sea_orm::entity::prelude::*;
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: i64,
+    pub name: String,
 }
 
-#[derive(Copy, Clone, Debug, EnumIter)]
-pub enum Relation {}
+#[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+pub enum Relation {
+    #[sea_orm(has_many = "super::xp::Entity")]
+    Xp,
+}
 
-impl RelationTrait for Relation {
-    fn def(&self) -> RelationDef {
-        match self {
-            _ => panic!("No RelationDef"),
-        }
+impl Related<super::xp::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Xp.def()
     }
 }
 
