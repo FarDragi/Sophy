@@ -1,15 +1,31 @@
 use serenity::{
     async_trait,
     client::{Context, EventHandler},
-    model::{interactions::Interaction, prelude::Ready},
+    model::{channel::Message, interactions::Interaction, prelude::Ready},
 };
 
-use crate::commands::run_command;
+use crate::{
+    commands::run_command,
+    database::functions::user::{create_user, exists_user, CreateUser},
+};
 
 pub struct DefaultHandler;
 
 #[async_trait]
 impl EventHandler for DefaultHandler {
+    async fn message(&self, _ctx: Context, new_message: Message) {
+        let user = new_message.author;
+
+        if exists_user(user.id.to_string()).await.unwrap() {
+            create_user(&CreateUser {
+                id: user.id.0.to_string(),
+                name: user.name,
+            })
+            .await
+            .ok();
+        }
+    }
+
     async fn ready(&self, ctx: Context, data_about_bot: Ready) {
         info!(
             "{} is connected! Shard [{}]",

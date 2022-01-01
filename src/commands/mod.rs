@@ -7,10 +7,8 @@ use serenity::{
     model::interactions::application_command::{ApplicationCommand, ApplicationCommandInteraction},
     Error,
 };
-use tokio::task;
 
 use crate::{
-    database::functions::user::{register_user, UserInput},
     models::commands::{ConfigCommand, RunCommand},
     states::config::Config,
 };
@@ -47,12 +45,6 @@ pub async fn run_command(
     let name = command_interaction.data.name.as_str();
 
     info!("Run command {}", name);
-
-    let user = UserInput {
-        id: command_interaction.user.id.0,
-        name: command_interaction.user.name.to_owned(),
-    };
-    task::spawn(register_user(user));
 
     match name {
         "test" => {
