@@ -21,7 +21,7 @@ pub async fn create_user(user: &CreateUser) -> AppResult<()> {
         name: Set(user.name.to_owned()),
     };
 
-    let user_model = user_model.insert(db).await.map_err(AppErr::Database)?;
+    user_model.insert(db).await.map_err(AppErr::Database)?;
 
     let xp_model = xp::ActiveModel {
         id: Set(Uuid::new_v4()),

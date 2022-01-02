@@ -14,7 +14,7 @@ async fn init_database(config: &Config) {
     DATABASE
         .get_or_init(|| async {
             let mut opt = ConnectOptions::new(config.database_connection.to_string());
-            opt.min_connections(5)
+            opt.min_connections(1)
                 .max_connections(15)
                 .connect_timeout(Duration::from_secs(8))
                 .idle_timeout(Duration::from_secs(8));

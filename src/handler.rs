@@ -16,13 +16,18 @@ impl EventHandler for DefaultHandler {
     async fn message(&self, _ctx: Context, new_message: Message) {
         let user = new_message.author;
 
-        if exists_user(user.id.to_string()).await.unwrap() {
-            create_user(&CreateUser {
+        if !exists_user(user.id.to_string()).await.unwrap() {
+            let result = create_user(&CreateUser {
                 id: user.id.0.to_string(),
-                name: user.name,
+                name: user.tag(),
             })
-            .await
-            .ok();
+            .await;
+
+            if result.is_err() {
+                error!("Fail create user: {}", user.id.0);
+            }
+
+            debug!("Create user: {}", user.id.0);
         }
     }
 
