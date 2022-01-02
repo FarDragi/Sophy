@@ -36,7 +36,7 @@ extern crate serenity;
 async fn main() {
     bootstrap_logger();
 
-    let mut config = Config::default();
+    let mut config = Config::figment();
     let args = Args::parse();
     args.aplay_configs(&mut config);
 

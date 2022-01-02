@@ -1,8 +1,13 @@
 use std::sync::Arc;
 
-use dotenv::{dotenv, var};
+use figment::{
+    providers::{Env, Format, Serialized, Toml},
+    Figment,
+};
+use serde::{Deserialize, Serialize};
 use serenity::{model::id::GuildId, prelude::TypeMapKey};
 
+#[derive(Deserialize, Default, Serialize, Debug)]
 pub struct Config {
     pub token: String,
     pub application_id: u64,
@@ -12,41 +17,15 @@ pub struct Config {
     pub migrate: bool,
 }
 
-impl Default for Config {
-    fn default() -> Self {
-        dotenv().ok();
-
-        let token = var("SOPHY_TOKEN").expect("Token not found");
-
-        let application_id = {
-            var("SOPHY_APPLICATION_ID")
-                .expect("Application id not found")
-                .parse::<u64>()
-                .expect("Fail convert application id")
-        };
-
-        let owner_guild = {
-            GuildId(
-                var("SOPHY_OWNER_GUILD")
-                    .expect("Fail get owner server id")
-                    .parse::<u64>()
-                    .expect("Fail convert owner server id"),
-            )
-        };
-
-        let database_connection = var("DATABASE_URL").expect("Database connection not found");
-
-        Self {
-            token,
-            application_id,
-            owner_guild,
-            update_commands: false,
-            database_connection,
-            migrate: false,
-        }
+impl Config {
+    pub fn figment() -> Self {
+        Figment::from(Serialized::defaults(Self::default()))
+            .merge(Env::prefixed("SOPHY_"))
+            .merge(Toml::file("Sophy.toml").nested())
+            .extract()
+            .expect("Fail get config")
     }
 }
-
 pub struct ConfigKey;
 
 impl TypeMapKey for ConfigKey {

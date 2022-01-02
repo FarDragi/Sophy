@@ -15,6 +15,7 @@ chrono = "0.4.19"
 clap = "3.0.0-beta.4"
 image = "0.23.14"
 imageproc = "0.22.0"
+serde = "1.0.133"
 
 [dependencies.serenity]
 version = "0.10.9"
@@ -29,6 +30,10 @@ features = ["macros", "rt-multi-thread", "parking_lot"]
 version = "0.4.2"
 default-features = false
 features = ["macros", "sqlx-postgres", "runtime-tokio-native-tls", "with-uuid"]
+
+[dependencies.figment]
+version = "0.10.6"
+features = ["env", "toml"]
 
 # Scripts
 
