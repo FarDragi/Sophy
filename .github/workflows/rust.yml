@@ -78,7 +78,7 @@ jobs:
           target/
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
-    - uses: /.github/actions/prisma/
+    - uses: ./.github/actions/prisma/
 
     - name: Sqlx Check
       run: cargo sqlx prepare --check
