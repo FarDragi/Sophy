@@ -79,7 +79,7 @@ jobs:
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
     - name: Prisma Deploy
-      run: npx prisma migrate deploy --skip-generate
+      run: npx prisma migrate deploy
 
     - name: Sqlx Check
       run: cargo sqlx prepare --check
