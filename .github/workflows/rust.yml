@@ -1,4 +1,4 @@
-name: Build, Clippy and Test
+name: Build and Clippy
 
 on:
   push:
@@ -47,45 +47,3 @@ jobs:
 
     - name: Clippy
       run: cargo clippy --verbose
-
-  sqlx:
-
-    runs-on: ubuntu-latest
-    env:
-      DATABASE_URL: postgres://postgres:12345@postgres:5432/sophy
-
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: 12345
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/cache@v2
-      with:
-        path: |
-          ~/.cargo/bin/
-          ~/.cargo/registry/index/
-          ~/.cargo/registry/cache/
-          ~/.cargo/git/db/
-          target/
-        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-
-    - name: Prisma Deploy
-      uses: docker://node:17
-      run: npx prisma migrate deploy
-
-    - name: Sqlx Check
-      uses: docker://rust:1.57
-      run: cargo install sqlx-cli
-
-    - name: Sqlx Check
-      uses: docker://rust:1.57
-      run: cargo sqlx prepare --check
-
