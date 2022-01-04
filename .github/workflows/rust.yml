@@ -1,4 +1,4 @@
-name: Build and Clippy
+name: Build, Clippy and Test
 
 on:
   push:
