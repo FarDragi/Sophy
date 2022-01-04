@@ -51,7 +51,7 @@ jobs:
   sqlx:
 
     runs-on: ubuntu-latest
-    container: rust:1.57
+    container: node:17
     env:
       DATABASE_URL: postgres://postgres:12345@postgres:5432/sophy
 
@@ -78,7 +78,8 @@ jobs:
           target/
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
-    - uses: ./.github/actions/prisma/
+    - name: Prisma Deploy
+      run: npx prisma migrate deploy --skip-generate
 
     - name: Sqlx Check
       run: cargo sqlx prepare --check
