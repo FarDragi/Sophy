@@ -52,17 +52,21 @@ jobs:
 
     runs-on: ubuntu-latest
     container: rust:1.57
+    env:
+      DATABASE_URL: postgres://postgres:12345@postgres:5432/sophy
 
     services:
       postgres:
         image: postgres
         env:
-          POSTGRES_PASSWORD: 123456
+          POSTGRES_PASSWORD: 12345
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      prisma:
+
 
     steps:
     - uses: actions/checkout@v2
@@ -75,6 +79,8 @@ jobs:
           ~/.cargo/git/db/
           target/
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+    - uses: ./docker/prisma.Dockerfile
 
     - name: Sqlx Check
       run: cargo sqlx prepare --check
