@@ -13,9 +13,8 @@ log = "0.4.14"
 env_logger = "0.9.0"
 chrono = "0.4.19"
 clap = "3.0.0-beta.4"
-image = "0.23.14"
-imageproc = "0.22.0"
 serde = "1.0.133"
+derive_builder = "0.10.2"
 
 [dependencies.serenity]
 version = "0.10.9"
@@ -26,14 +25,22 @@ features = ["client", "gateway", "rustls_backend", "model", "unstable_discord_ap
 version = "1.12.0"
 features = ["macros", "rt-multi-thread", "parking_lot"]
 
-[dependencies.sea-orm]
-version = "0.4.2"
-default-features = false
-features = ["macros", "sqlx-postgres", "runtime-tokio-native-tls", "with-uuid"]
-
 [dependencies.figment]
 version = "0.10.6"
 features = ["env", "toml"]
+
+[dependencies.sqlx]
+version = "0.5.10"
+features = ["postgres", "runtime-tokio-native-tls", "uuid", "offline"]
+
+[dependencies.uuid]
+version = "0.8.2"
+features = ["v4"]
+
+# Features
+
+[features]
+default = []
 
 # Scripts
 

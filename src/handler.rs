@@ -13,22 +13,8 @@ pub struct DefaultHandler;
 
 #[async_trait]
 impl EventHandler for DefaultHandler {
-    async fn message(&self, _ctx: Context, new_message: Message) {
-        let user = new_message.author;
-
-        if !exists_user(user.id.to_string()).await.unwrap() {
-            let result = create_user(&CreateUser {
-                id: user.id.0.to_string(),
-                name: user.tag(),
-            })
-            .await;
-
-            if result.is_err() {
-                error!("Fail create user: {}", user.id.0);
-            }
-
-            debug!("Create user: {}", user.id.0);
-        }
+    async fn message(&self, ctx: Context, new_message: Message) {
+        message_handler(ctx, new_message).await;
     }
 
     async fn ready(&self, ctx: Context, data_about_bot: Ready) {
@@ -42,6 +28,29 @@ impl EventHandler for DefaultHandler {
     async fn interaction_create(&self, ctx: Context, interaction: Interaction) {
         if let Interaction::ApplicationCommand(command_interaction) = interaction {
             run_command(&ctx, &command_interaction).await.ok();
+        }
+    }
+}
+
+async fn message_handler(_ctx: Context, message: Message) {
+    let user = message.author;
+
+    if user.bot {
+        return;
+    }
+
+    if !exists_user(&user.id.to_string()).await.unwrap_or(false) {
+        let result = create_user(CreateUser {
+            id: user.id.0.to_string(),
+            name: user.tag(),
+        })
+        .await;
+
+        if let Err(err) = result {
+            err.log();
+            error!("Fail create user: {}", user.id.0);
+        } else {
+            debug!("Create user: {}", user.id.0);
         }
     }
 }

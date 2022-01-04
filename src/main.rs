@@ -32,6 +32,9 @@ extern crate log;
 #[macro_use]
 extern crate serenity;
 
+#[macro_use]
+extern crate sqlx;
+
 #[tokio::main]
 async fn main() {
     bootstrap_logger();

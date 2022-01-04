@@ -1,0 +1,63 @@
+{
+  "db": "PostgreSQL",
+  "0881a52586ce680bcdebe164ca08421d5f7fbf5a3f06c71fbf927fc8fafe524a": {
+    "query": "INSERT INTO \"Xp\" (id, \"userId\") VALUES ($1, $2)",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Text"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "3dea858e50df837e3af31034ed4ce3dd235970db797b9342010526021a04f522": {
+    "query": "SELECT EXISTS (SELECT 1 FROM \"User\" WHERE id = $1) as \"exists!\"",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "exists!",
+          "type_info": "Bool"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        null
+      ]
+    }
+  },
+  "49df65a6d9b84e1edf948f96cec59c7bd9852beea538873fc53c32e72d4efe7d": {
+    "query": "INSERT INTO \"User\" (id, name) VALUES ($1, $2) RETURNING id, name",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 1,
+          "name": "name",
+          "type_info": "Varchar"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Varchar"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  }
+}
