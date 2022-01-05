@@ -11,8 +11,10 @@ datasource db {
 }
 
 model User {
-  id   String @id
-  name String @db.VarChar(100)
+  id       String    @id
+  name     String    @db.VarChar(100)
+  createAt DateTime  @default(now())
+  updateAt DateTime?
 
   Xp Xp?
 }
