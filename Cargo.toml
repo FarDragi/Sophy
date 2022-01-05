@@ -14,7 +14,6 @@ env_logger = "0.9.0"
 chrono = "0.4.19"
 clap = "3.0.0-beta.4"
 serde = "1.0.133"
-derive_builder = "0.10.2"
 
 [dependencies.serenity]
 version = "0.10.9"
@@ -31,11 +30,15 @@ features = ["env", "toml"]
 
 [dependencies.sqlx]
 version = "0.5.10"
-features = ["postgres", "runtime-tokio-native-tls", "uuid", "offline"]
+features = ["postgres", "runtime-tokio-native-tls", "uuid", "time"]
 
 [dependencies.uuid]
 version = "0.8.2"
 features = ["v4"]
+
+[dependencies.builder-pattern]
+version = "0.4.2"
+default-features = false
 
 # Features
 

@@ -1,4 +1,3 @@
-use derive_builder::Builder;
 use uuid::Uuid;
 
 use crate::{
@@ -10,7 +9,7 @@ use crate::{
 pub struct User {
     pub id: String,
     pub name: String,
-    #[builder(setter(skip, strip_option))]
+    #[default(None)]
     pub xp_id: Option<Uuid>,
 }
 
@@ -56,9 +55,5 @@ pub async fn create_user(user: CreateUser) -> AppResult<User> {
     .await
     .map_err(AppErr::Database)?;
 
-    Ok(UserBuilder::default()
-        .id(rec_user.id)
-        .name(rec_user.name)
-        .build()
-        .map_err(|err| AppErr::Builder(err.to_string()))?)
+    Ok(User::new().id(rec_user.id).name(rec_user.name).build())
 }
