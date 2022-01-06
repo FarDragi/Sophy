@@ -27,9 +27,6 @@ use states::{
 use tokio::time::sleep;
 
 #[macro_use]
-extern crate builder_pattern;
-
-#[macro_use]
 extern crate log;
 
 #[macro_use]
@@ -37,6 +34,9 @@ extern crate serenity;
 
 #[macro_use]
 extern crate sqlx;
+
+#[macro_use]
+extern crate typed_builder;
 
 #[tokio::main]
 async fn main() {

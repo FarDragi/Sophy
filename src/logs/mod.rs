@@ -27,6 +27,7 @@ pub fn bootstrap_logger() {
         .filter_level(LevelFilter::Off)
         .filter_module("serenity", LevelFilter::Warn)
         .filter_module("sophy_bot", LevelFilter::Debug)
+        .filter_module("sqlx", LevelFilter::Trace)
         .init();
 }
 

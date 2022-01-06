@@ -11,12 +11,13 @@ datasource db {
 }
 
 model User {
-  id       String    @id
-  name     String    @db.VarChar(100)
-  createAt DateTime  @default(now())
-  updateAt DateTime?
+  id        String    @id
+  name      String    @db.VarChar(100)
+  create_at DateTime  @default(now())
+  update_at DateTime?
 
   Xp Xp?
+  @@map("user")
 }
 
 model Xp {
@@ -24,6 +25,7 @@ model Xp {
   level    Int    @default(1)
   progress BigInt @default(0)
 
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String? @unique
+  User    User   @relation(fields: [user_id], references: [id])
+  user_id String @unique
+  @@map("xp")
 }

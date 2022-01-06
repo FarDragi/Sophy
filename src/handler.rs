@@ -6,7 +6,10 @@ use serenity::{
 
 use crate::{
     commands::run_command,
-    database::functions::user::{create_user, exists_user, CreateUser},
+    database::functions::{
+        user::{create_user, exists_user, CreateUser},
+        xp::add_xp,
+    },
 };
 
 pub struct DefaultHandler;
@@ -51,6 +54,12 @@ async fn message_handler(_ctx: Context, message: Message) {
             error!("Fail create user: {}", user.id.0);
         } else {
             debug!("Create user: {}", user.id.0);
+        }
+    } else {
+        if let Err(err) = add_xp(&user.id.to_string()).await {
+            err.log();
+        } else {
+            debug!("Add xp into user: {}", user.id.0)
         }
     }
 }

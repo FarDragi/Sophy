@@ -5,11 +5,11 @@ use crate::{
     error::{AppErr, AppResult},
 };
 
-#[derive(Builder)]
+#[derive(TypedBuilder)]
 pub struct User {
     pub id: String,
     pub name: String,
-    #[default(None)]
+    #[builder(default, setter(strip_option))]
     pub xp_id: Option<Uuid>,
 }
 
@@ -17,7 +17,7 @@ pub async fn exists_user(id: &str) -> AppResult<bool> {
     let db = get_db();
 
     let rec = query!(
-        r#"SELECT EXISTS (SELECT 1 FROM "User" WHERE id = $1) as "exists!""#,
+        r#"SELECT EXISTS (SELECT 1 FROM "user" WHERE id = $1) as "exists!""#,
         id
     )
     .fetch_one(db)
@@ -32,28 +32,28 @@ pub struct CreateUser {
     pub name: String,
 }
 
-pub async fn create_user(user: CreateUser) -> AppResult<User> {
+pub async fn create_user(user: CreateUser) -> AppResult<bool> {
     let db = get_db();
 
-    let rec_user = query!(
-        r#"INSERT INTO "User" (id, name) VALUES ($1, $2) RETURNING id, name"#,
-        user.id,
+    query!(
+        r#"INSERT INTO "user" (id, name) VALUES ($1, $2)"#,
+        &user.id,
         user.name
     )
-    .fetch_one(db)
+    .execute(db)
     .await
     .map_err(AppErr::Database)?;
 
     let xp_id = Uuid::new_v4();
 
     query!(
-        r#"INSERT INTO "Xp" (id, "userId") VALUES ($1, $2)"#,
+        r#"INSERT INTO "xp" (id, user_id) VALUES ($1, $2)"#,
         xp_id,
-        rec_user.id
+        &user.id
     )
     .execute(db)
     .await
     .map_err(AppErr::Database)?;
 
-    Ok(User::new().id(rec_user.id).name(rec_user.name).build())
+    Ok(true)
 }
