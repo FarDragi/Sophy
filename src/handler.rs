@@ -4,13 +4,7 @@ use serenity::{
     model::{channel::Message, interactions::Interaction, prelude::Ready},
 };
 
-use crate::{
-    commands::run_command,
-    database::functions::{
-        user::{create_user, exists_user, CreateUser},
-        xp::add_xp,
-    },
-};
+use crate::{commands::run_command, modules::xp::xp_module_run};
 
 pub struct DefaultHandler;
 
@@ -35,31 +29,12 @@ impl EventHandler for DefaultHandler {
     }
 }
 
-async fn message_handler(_ctx: Context, message: Message) {
-    let user = message.author;
+async fn message_handler(ctx: Context, message: Message) {
+    let user = &message.author;
 
     if user.bot {
         return;
     }
 
-    if !exists_user(&user.id.to_string()).await.unwrap_or(false) {
-        let result = create_user(CreateUser {
-            id: user.id.0.to_string(),
-            name: user.tag(),
-        })
-        .await;
-
-        if let Err(err) = result {
-            err.log();
-            error!("Fail create user: {}", user.id.0);
-        } else {
-            debug!("Create user: {}", user.id.0);
-        }
-    } else {
-        if let Err(err) = add_xp(&user.id.to_string()).await {
-            err.log();
-        } else {
-            debug!("Add xp into user: {}", user.id.0)
-        }
-    }
+    xp_module_run(&ctx, &message).await;
 }

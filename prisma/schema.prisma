@@ -21,9 +21,10 @@ model User {
 }
 
 model Xp {
-  id       String @id @db.Uuid
-  level    Int    @default(1)
-  progress BigInt @default(0)
+  id        String   @id @db.Uuid
+  level     Int      @default(1)
+  progress  BigInt   @default(0)
+  update_at DateTime @default(now())
 
   User    User   @relation(fields: [user_id], references: [id])
   user_id String @unique

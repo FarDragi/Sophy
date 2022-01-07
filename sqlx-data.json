@@ -1,40 +1,7 @@
 {
   "db": "PostgreSQL",
-  "7abc06c325dddda35f33c3160293b3b209bc2541457b5f8c952dde62d3948e09": {
-    "query": "INSERT INTO \"xp\" (id, user_id) VALUES ($1, $2)",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Uuid",
-          "Text"
-        ]
-      },
-      "nullable": []
-    }
-  },
-  "7c7e272b6dee86172c831127b0bfa91ee483d4ad276181885e9257cc0928fa7d": {
-    "query": "SELECT EXISTS (SELECT 1 FROM \"user\" WHERE id = $1) as \"exists!\"",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "exists!",
-          "type_info": "Bool"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": [
-        null
-      ]
-    }
-  },
-  "a65e7f1420ac38820183f0e9d1e2f73bb81429c7cdf295e1b8f14cfba916a6d4": {
-    "query": "UPDATE \"xp\" SET progress = progress + 1 WHERE user_id = $1 RETURNING *",
+  "1389bbb04277949c231b09b7a8799448f329e9bcd5b3d11a1f63d7a2f6beebee": {
+    "query": "\n            UPDATE\n                \"xp\"\n            SET\n                progress = progress + 1\n            WHERE\n                user_id = $1\n            RETURNING *\n            ",
     "describe": {
       "columns": [
         {
@@ -68,6 +35,39 @@
         false,
         false,
         false
+      ]
+    }
+  },
+  "7abc06c325dddda35f33c3160293b3b209bc2541457b5f8c952dde62d3948e09": {
+    "query": "INSERT INTO \"xp\" (id, user_id) VALUES ($1, $2)",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Text"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "7c7e272b6dee86172c831127b0bfa91ee483d4ad276181885e9257cc0928fa7d": {
+    "query": "SELECT EXISTS (SELECT 1 FROM \"user\" WHERE id = $1) as \"exists!\"",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "exists!",
+          "type_info": "Bool"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        null
       ]
     }
   },

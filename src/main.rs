@@ -5,6 +5,7 @@ mod error;
 mod handler;
 mod logs;
 pub mod models;
+pub mod modules;
 pub mod states;
 pub mod utils;
 
