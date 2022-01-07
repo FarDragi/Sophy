@@ -1,43 +1,5 @@
 {
   "db": "PostgreSQL",
-  "1389bbb04277949c231b09b7a8799448f329e9bcd5b3d11a1f63d7a2f6beebee": {
-    "query": "\n            UPDATE\n                \"xp\"\n            SET\n                progress = progress + 1\n            WHERE\n                user_id = $1\n            RETURNING *\n            ",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "id",
-          "type_info": "Uuid"
-        },
-        {
-          "ordinal": 1,
-          "name": "level",
-          "type_info": "Int4"
-        },
-        {
-          "ordinal": 2,
-          "name": "progress",
-          "type_info": "Int8"
-        },
-        {
-          "ordinal": 3,
-          "name": "user_id",
-          "type_info": "Text"
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": [
-        false,
-        false,
-        false,
-        false
-      ]
-    }
-  },
   "7abc06c325dddda35f33c3160293b3b209bc2541457b5f8c952dde62d3948e09": {
     "query": "INSERT INTO \"xp\" (id, user_id) VALUES ($1, $2)",
     "describe": {
@@ -82,6 +44,64 @@
         ]
       },
       "nullable": []
+    }
+  },
+  "d1cc1db63ed2deec24ecbf6375b1f86a489cfd4bf8a4753e33b331954c79d235": {
+    "query": "\n            UPDATE \"xp\"\n            SET\n                level = $1,\n                progress = $2\n            WHERE\n                id = $3",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Int4",
+          "Int8",
+          "Uuid"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "e611688e6580eb10c1fa09fafb00ad22e89de6bc9d2c4b13b2f5da410d2d2e5d": {
+    "query": "\n            UPDATE\n                \"xp\"\n            SET\n                progress = progress + 1,\n                update_at = CURRENT_TIMESTAMP\n            WHERE\n                user_id = $1 AND\n                update_at + '1 minutes' < CURRENT_TIMESTAMP\n            RETURNING\n                id, level, progress, user_id, update_at\n            ",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Uuid"
+        },
+        {
+          "ordinal": 1,
+          "name": "level",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 2,
+          "name": "progress",
+          "type_info": "Int8"
+        },
+        {
+          "ordinal": 3,
+          "name": "user_id",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 4,
+          "name": "update_at",
+          "type_info": "Timestamp"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
     }
   }
 }

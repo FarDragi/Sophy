@@ -2,7 +2,7 @@ use serenity::{client::Context, model::channel::Message};
 
 use crate::database::functions::{
     user::{create_user, exists_user, CreateUser},
-    xp::add_xp,
+    xp::{add_xp, user_level_up},
 };
 
 pub async fn xp_module_run(_ctx: &Context, msg: &Message) {
@@ -27,7 +27,18 @@ pub async fn xp_module_run(_ctx: &Context, msg: &Message) {
             Err(err) => {
                 err.log();
             }
-            Ok(_) => debug!("Add xp into user: {}", &user_id),
+            Ok(Some((level_up, xp))) => {
+                debug!("Add xp into user: {}", &user_id);
+
+                if let Some(progress) = level_up {
+                    if let Err(err) = user_level_up(progress, &xp).await {
+                        err.log();
+                    } else {
+                        debug!("Level up: {}", &user_id);
+                    }
+                }
+            }
+            _ => {}
         }
     }
 }
