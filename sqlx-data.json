@@ -1,5 +1,18 @@
 {
   "db": "PostgreSQL",
+  "130ecdbe8f47c4ff8a31cdcd5242393265d565dc41368ef6bf5a1199d022f20b": {
+    "query": "INSERT INTO \"guild\" (id, name) VALUES ($1, $2)",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Varchar"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "7abc06c325dddda35f33c3160293b3b209bc2541457b5f8c952dde62d3948e09": {
     "query": "INSERT INTO \"xp\" (id, user_id) VALUES ($1, $2)",
     "describe": {
@@ -44,6 +57,26 @@
         ]
       },
       "nullable": []
+    }
+  },
+  "aec5ccdd8bfed5cee4b0c6021b5da10f5c87496d887ce1a72117b32aed416b7a": {
+    "query": "SELECT EXISTS (SELECT 1 FROM \"guild\" WHERE id = $1) as \"exists!\"",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "exists!",
+          "type_info": "Bool"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        null
+      ]
     }
   },
   "d1cc1db63ed2deec24ecbf6375b1f86a489cfd4bf8a4753e33b331954c79d235": {

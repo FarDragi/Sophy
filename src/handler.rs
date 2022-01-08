@@ -1,10 +1,14 @@
 use serenity::{
     async_trait,
     client::{Context, EventHandler},
-    model::{channel::Message, interactions::Interaction, prelude::Ready},
+    model::{channel::Message, guild::Guild, interactions::Interaction, prelude::Ready},
 };
 
-use crate::{commands::run_command, modules::xp::xp_module_run};
+use crate::{
+    commands::run_command,
+    database::functions::server::{create_guild, exists_guild},
+    modules::xp::xp_module_run,
+};
 
 pub struct DefaultHandler;
 
@@ -27,6 +31,10 @@ impl EventHandler for DefaultHandler {
             run_command(&ctx, &command_interaction).await.ok();
         }
     }
+
+    async fn guild_create(&self, ctx: Context, guild: Guild) {
+        guild_handler(ctx, guild).await;
+    }
 }
 
 async fn message_handler(ctx: Context, message: Message) {
@@ -37,4 +45,23 @@ async fn message_handler(ctx: Context, message: Message) {
     }
 
     xp_module_run(&ctx, &message).await;
+}
+
+async fn guild_handler(_ctx: Context, guild: Guild) {
+    let guild_id = guild.id.to_string();
+
+    if !exists_guild(&guild_id).await.unwrap_or(false) {
+        let result = create_guild(crate::database::functions::server::CreateGuild {
+            id: guild_id.to_owned(),
+            name: guild.name,
+        })
+        .await;
+
+        if let Err(err) = result {
+            err.log();
+            error!("Fail create guild: {}", &guild_id);
+        } else {
+            debug!("Create guild: {}", &guild_id);
+        }
+    }
 }

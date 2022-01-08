@@ -24,9 +24,25 @@ model Xp {
   id        String   @id @db.Uuid
   level     Int      @default(1)
   progress  BigInt   @default(0)
+  user_id   String   @unique
   update_at DateTime @default(now())
 
-  User    User   @relation(fields: [user_id], references: [id])
-  user_id String @unique
+  User User @relation(fields: [user_id], references: [id])
   @@map("xp")
+}
+
+model Guild {
+  id   String @id
+  name String @db.VarChar(100)
+
+  Module Modules?
+  @@map("guild")
+}
+
+model Modules {
+  id       String @id @db.Uuid
+  guild_id String @unique
+
+  Guild Guild @relation(fields: [guild_id], references: [id])
+  @@map("modules")
 }
