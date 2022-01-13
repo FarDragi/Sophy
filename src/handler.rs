@@ -6,7 +6,7 @@ use serenity::{
 
 use crate::{
     commands::run_command,
-    database::functions::server::{create_guild, exists_guild},
+    database::functions::guild::{create_guild, exists_guild, CreateGuild},
     modules::xp::xp_module_run,
 };
 
@@ -51,7 +51,7 @@ async fn guild_handler(_ctx: Context, guild: Guild) {
     let guild_id = guild.id.to_string();
 
     if !exists_guild(&guild_id).await.unwrap_or(false) {
-        let result = create_guild(crate::database::functions::server::CreateGuild {
+        let result = create_guild(CreateGuild {
             id: guild_id.to_owned(),
             name: guild.name,
         })

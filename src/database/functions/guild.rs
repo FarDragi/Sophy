@@ -1,3 +1,5 @@
+use uuid::Uuid;
+
 use crate::{
     database::get_db,
     error::{AppErr, AppResult},
@@ -29,6 +31,17 @@ pub async fn create_guild(guild: CreateGuild) -> AppResult<bool> {
         r#"INSERT INTO "guild" (id, name) VALUES ($1, $2)"#,
         &guild.id,
         guild.name
+    )
+    .execute(db)
+    .await
+    .map_err(AppErr::Database)?;
+
+    let module_id = Uuid::new_v4();
+
+    query!(
+        r#"INSERT INTO "modules" (id, guild_id) VALUES ($1, $2)"#,
+        module_id,
+        &guild.id
     )
     .execute(db)
     .await
