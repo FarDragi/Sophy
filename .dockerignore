@@ -1,0 +1,5 @@
+/target
+/prisma
+.github
+.env
+Sophy.exemple.toml

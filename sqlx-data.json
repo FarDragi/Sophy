@@ -13,6 +13,19 @@
       "nullable": []
     }
   },
+  "746b11ff9e3f0b8a1ab079f7144185715bf06c1dca680e90380cb47b45c20f39": {
+    "query": "INSERT INTO \"modules\" (id, guild_id) VALUES ($1, $2)",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Uuid",
+          "Text"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "7abc06c325dddda35f33c3160293b3b209bc2541457b5f8c952dde62d3948e09": {
     "query": "INSERT INTO \"xp\" (id, user_id) VALUES ($1, $2)",
     "describe": {

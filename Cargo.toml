@@ -46,3 +46,4 @@ default = []
 
 # prisma migrate dev --skip-generate
 # sea-orm-cli generate entity -o src/database/entity
+# cargo sqlx prepare
