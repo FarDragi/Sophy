@@ -1,13 +1,13 @@
-use clap::{AppSettings, Clap};
-
 use crate::states::config::Config;
 
-#[derive(Clap)]
-#[clap(version = "0.1.0", setting = AppSettings::ColoredHelp)]
+#[derive(Parser)]
+#[clap(version = "0.1.0")]
 pub struct Args {
-    #[clap(short, long, about = "Update bot commands")]
+    /// Update bot commands
+    #[clap(short, long)]
     update_commands: bool,
-    #[clap(short, long, about = "Migrate database")]
+    /// Migrate database
+    #[clap(short, long)]
     migrate: bool,
 }
 

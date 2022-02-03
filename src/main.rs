@@ -14,7 +14,7 @@ use std::{
     time::Duration,
 };
 
-use clap::Clap;
+use clap::StructOpt;
 use cli::Args;
 use commands::config_commands;
 use database::bootstrap_database;
@@ -26,6 +26,9 @@ use states::{
     shards::{Shards, ShardsKey},
 };
 use tokio::time::sleep;
+
+#[macro_use]
+extern crate clap;
 
 #[macro_use]
 extern crate log;

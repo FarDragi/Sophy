@@ -12,8 +12,7 @@ lazy_static = "1.4.0"
 log = "0.4.14"
 env_logger = "0.9.0"
 chrono = "0.4.19"
-clap = "3.0.0-beta.4"
-serde = "1.0.133"
+serde = "1.0.136"
 typed-builder = "0.9.1"
 
 [dependencies.serenity]
@@ -22,7 +21,7 @@ default-features = false
 features = ["client", "gateway", "rustls_backend", "model", "unstable_discord_api"]
 
 [dependencies.tokio]
-version = "1.12.0"
+version = "1.15.0"
 features = ["macros", "rt-multi-thread", "parking_lot"]
 
 [dependencies.figment]
@@ -36,6 +35,10 @@ features = ["postgres", "runtime-tokio-native-tls", "uuid", "chrono", "offline"]
 [dependencies.uuid]
 version = "0.8.2"
 features = ["v4"]
+
+[dependencies.clap]
+version = "3.0.14"
+features = ["derive"]
 
 # Features
 
