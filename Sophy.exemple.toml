@@ -1,5 +1,0 @@
-[default]
-token = ""
-application_id = 0
-owner_guild = 0
-database_connection = "<dbtype>://<user>:<password>@<ip>:<port>/<dbname>"
