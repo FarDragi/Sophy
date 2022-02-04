@@ -10,6 +10,9 @@ edition = "2021"
 
 [dependencies]
 serde = "1.0.136"
+env_logger = "0.9.0"
+log = "0.4.14"
+chrono = "0.4.19"
 
 [dependencies.poise]
 git = "https://github.com/kangalioo/poise.git"

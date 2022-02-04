@@ -31,13 +31,13 @@ pub async fn bootstrap_bot(config: &Config) {
 }
 
 fn bot_info(bot: &Ready) {
-    println!("Bot started: {}", bot.user.tag());
+    info!("Bot started: {}", bot.user.tag());
 }
 
 fn shard_latency(shards: Arc<Mutex<ShardManager>>) {
     tokio::spawn(async move {
         loop {
-            sleep(Duration::from_secs(30)).await;
+            sleep(Duration::from_secs(60)).await;
 
             let shards_lock = shards.lock().await;
             let runners = shards_lock.runners.lock().await;
@@ -49,7 +49,7 @@ fn shard_latency(shards: Arc<Mutex<ShardManager>>) {
                     "no latency".to_string()
                 };
 
-                println!("Shard [{}] is {} with {}", id, runner.stage, latency);
+                debug!("Shard [{}] is {} with {}", id, runner.stage, latency);
             }
         }
     });
