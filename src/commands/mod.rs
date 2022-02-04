@@ -1,12 +1,11 @@
 use poise::{Command, Context};
 
-mod util;
+mod ping;
 
-use crate::error::AppError;
+use crate::{error::AppError, states::States};
 
-type Data = ();
-type CommandContext<'a> = Context<'a, Data, AppError>;
+pub type CommandContext<'a> = Context<'a, States, AppError>;
 
-pub fn get_commands() -> Vec<Command<(), AppError>> {
-    vec![util::ping()]
+pub fn get_commands() -> Vec<Command<States, AppError>> {
+    vec![ping::ping()]
 }

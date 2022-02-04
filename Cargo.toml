@@ -20,7 +20,7 @@ rev = "a28b0193ab032aaedb6b383d1be0d717f9dcf775"
 
 [dependencies.tokio]
 version = "1.16.1"
-features = ["macros", "rt-multi-thread"]
+features = ["macros", "rt-multi-thread", "sync"]
 
 [dependencies.figment]
 version = "0.10.6"

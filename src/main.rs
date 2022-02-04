@@ -6,7 +6,9 @@ mod bot;
 pub mod commands;
 pub mod config;
 pub mod error;
+pub mod events;
 pub mod logs;
+pub mod states;
 
 #[macro_use]
 extern crate poise;
