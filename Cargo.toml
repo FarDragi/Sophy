@@ -9,7 +9,16 @@ edition = "2021"
 # Dependencies
 
 [dependencies]
+serde = "1.0.136"
 
 [dependencies.poise]
 git = "https://github.com/kangalioo/poise.git"
 rev = "a28b0193ab032aaedb6b383d1be0d717f9dcf775"
+
+[dependencies.tokio]
+version = "1.16.1"
+features = ["macros", "rt-multi-thread"]
+
+[dependencies.figment]
+version = "0.10.6"
+features = ["env", "toml"]
