@@ -6,6 +6,7 @@ use figment::{
 #[derive(Default, Debug, Deserialize, Serialize)]
 pub struct Config {
     pub token: String,
+    pub database_url: String,
 }
 
 impl Config {

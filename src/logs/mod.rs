@@ -24,7 +24,7 @@ pub fn bootstrap_logs() {
             writeln!(
                 buf,
                 "[{}] [{}] [{}]: {}",
-                date.format("%Y-%m-%d %H:%M:%S").to_string(),
+                date.format("%Y-%m-%d %H:%M:%S"),
                 target_style.value(record.target()),
                 level_style.value(level),
                 record.args()

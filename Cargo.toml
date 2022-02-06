@@ -25,3 +25,7 @@ features = ["macros", "rt-multi-thread", "sync"]
 [dependencies.figment]
 version = "0.10.6"
 features = ["env", "toml"]
+
+[dependencies.sqlx]
+version = "0.5.10"
+features = ["postgres", "runtime-tokio-rustls", "macros"]

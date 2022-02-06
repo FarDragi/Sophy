@@ -1,2 +1,3 @@
 [default]
 token = ""
+database_url = "postgresql://<use>:<password>@<host>:<port>/<name>?schema=public"

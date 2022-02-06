@@ -4,17 +4,22 @@ use poise::{
     serenity_prelude::{Mutex as SerenityMutex, Ready, ShardManager},
     Framework, FrameworkOptions,
 };
+use sqlx::{Pool, Postgres};
 use tokio::{sync::Mutex, time::sleep};
 
 use crate::{
     commands::get_commands,
     config::Config,
-    states::{shard::ShardsLatency, States},
+    events::event_listener,
+    states::{level::Levels, shard::ShardsLatency, States},
 };
 
-pub async fn bootstrap_bot(config: &Config) {
+pub async fn bootstrap_bot(config: &Config, db_pool: Pool<Postgres>) {
     let options = FrameworkOptions {
         commands: get_commands(),
+        listener: |ctx, event, framework, states| {
+            Box::pin(event_listener(ctx, event, framework, states))
+        },
         ..Default::default()
     };
 
@@ -29,7 +34,11 @@ pub async fn bootstrap_bot(config: &Config) {
 
                 shard_latency(framework.shard_manager(), shards_latency.clone());
 
-                Ok(States { shards_latency })
+                Ok(States {
+                    shards_latency,
+                    levels: Arc::new(Levels::default()),
+                    database: db_pool,
+                })
             })
         })
         .run_autosharded()
