@@ -11,7 +11,7 @@ use crate::{
     commands::get_commands,
     config::Config,
     events::event_listener,
-    states::{level::Levels, shard::ShardsLatency, States},
+    states::{shard::ShardsLatency, States},
 };
 
 pub async fn bootstrap_bot(config: &Config, db_pool: Pool<Postgres>) {
@@ -36,7 +36,6 @@ pub async fn bootstrap_bot(config: &Config, db_pool: Pool<Postgres>) {
 
                 Ok(States {
                     shards_latency,
-                    levels: Arc::new(Levels::default()),
                     database: db_pool,
                 })
             })

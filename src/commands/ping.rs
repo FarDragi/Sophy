@@ -1,13 +1,13 @@
-use crate::error::AppError;
+use crate::error::{AppError, AppResult};
 
 use super::CommandContext;
 
 #[command(slash_command)]
-pub async fn ping(ctx: CommandContext<'_>) -> Result<(), AppError> {
-    ping_interaction(ctx).await
+pub async fn ping(ctx: CommandContext<'_>) -> AppResult<()> {
+    handler(ctx).await
 }
 
-async fn ping_interaction(ctx: CommandContext<'_>) -> Result<(), AppError> {
+async fn handler(ctx: CommandContext<'_>) -> AppResult<()> {
     let duration = {
         let latency = ctx.data().shards_latency.lock().await;
         latency.get(&ctx.discord().shard_id).cloned()

@@ -3,6 +3,8 @@ use std::fmt::{Display, Formatter};
 use poise::serenity_prelude::Error as BotErr;
 use sqlx::error::DatabaseError;
 
+pub type AppResult<T> = Result<T, AppError>;
+
 #[derive(Debug)]
 pub enum AppError {
     BotError(BotErr),

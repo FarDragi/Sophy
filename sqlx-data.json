@@ -1,0 +1,51 @@
+{
+  "db": "PostgreSQL",
+  "3622a41ecab90c95eb8c048af511f02299e31d04fab03da2f99d6564e24fdc31": {
+    "query": "\n        UPDATE xp\n        SET\n            level = $1,\n            progress = $2\n        WHERE\n            id = $3\n        ",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Int4",
+          "Int8",
+          "Bpchar"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "be791dd2873aaff294b705a78798c5f15668e1def9b8dfe017bdbc838b00e274": {
+    "query": "\n        INSERT INTO xp\n            (id, last_update)\n        VALUES\n            ($1, $3)\n        ON CONFLICT\n            (id)\n        DO UPDATE\n        SET\n            progress = xp.progress + $2,\n            last_update = $3\n        WHERE\n            xp.last_update < $3 - 300\n        RETURNING\n            progress, level, last_update\n        ",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "progress",
+          "type_info": "Int8"
+        },
+        {
+          "ordinal": 1,
+          "name": "level",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 2,
+          "name": "last_update",
+          "type_info": "Int8"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Bpchar",
+          "Int8",
+          "Int8"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  }
+}

@@ -13,6 +13,7 @@ serde = "1.0.136"
 env_logger = "0.9.0"
 log = "0.4.14"
 chrono = "0.4.19"
+typed-builder = "0.9.1"
 
 [dependencies.poise]
 git = "https://github.com/kangalioo/poise.git"
@@ -28,4 +29,4 @@ features = ["env", "toml"]
 
 [dependencies.sqlx]
 version = "0.5.10"
-features = ["postgres", "runtime-tokio-rustls", "macros"]
+features = ["postgres", "runtime-tokio-rustls", "macros", "offline", "chrono"]

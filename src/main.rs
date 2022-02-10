@@ -11,6 +11,7 @@ pub mod error;
 pub mod events;
 pub mod logs;
 pub mod states;
+pub mod utils;
 
 #[macro_use]
 extern crate poise;
@@ -23,6 +24,9 @@ extern crate log;
 
 #[macro_use]
 extern crate sqlx;
+
+#[macro_use]
+extern crate typed_builder;
 
 #[tokio::main]
 async fn main() {

@@ -11,10 +11,10 @@ datasource db {
 }
 
 model Xp {
-  id          String   @id @db.Char(20)
-  progress    BigInt   @default(0)
-  level       Int      @default(0)
-  last_update DateTime @default(now())
+  id          String @id @db.Char(20)
+  progress    BigInt @default(0)
+  level       Int    @default(1)
+  last_update BigInt
 
   @@map("xp")
 }

@@ -1,15 +1,11 @@
-use std::sync::Arc;
-
 use sqlx::{Pool, Postgres};
 
-use self::{level::Levels, shard::ShardsLatency};
+use self::shard::ShardsLatency;
 
-pub mod level;
 pub mod shard;
 
 pub struct States {
     pub shards_latency: ShardsLatency,
-    pub levels: Arc<Levels>,
     pub database: Pool<Postgres>,
 }
 

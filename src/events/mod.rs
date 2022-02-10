@@ -13,7 +13,7 @@ pub async fn event_listener(
     states: &States,
 ) -> Result<(), AppError> {
     if let Event::Message { new_message } = event {
-        level_module_run(new_message, states).await
+        level_module_run(new_message, states).await?
     }
 
     Ok(())
