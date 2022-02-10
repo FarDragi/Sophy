@@ -6,6 +6,7 @@ use logs::bootstrap_logs;
 mod bot;
 pub mod commands;
 pub mod config;
+pub mod constants;
 pub mod database;
 pub mod error;
 pub mod events;

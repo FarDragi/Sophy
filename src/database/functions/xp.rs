@@ -1,7 +1,7 @@
 use chrono::Utc;
 use sqlx::{Pool, Postgres};
 
-use crate::error::{AppResult, MapDatabaseError};
+use crate::error::{AppResult, MapError};
 
 pub struct XpLevel {
     pub progress: i64,
@@ -36,7 +36,7 @@ pub async fn add_xp(db: &Pool<Postgres>, user_id: u64, count: i64) -> AppResult<
     )
     .fetch_optional(db)
     .await
-    .map_database_error()?;
+    .map_app_err()?;
 
     Ok(result)
 }
@@ -62,7 +62,7 @@ pub async fn level_up(
     )
     .execute(db)
     .await
-    .map_database_error()?;
+    .map_app_err()?;
 
     Ok(result.rows_affected() == 1)
 }

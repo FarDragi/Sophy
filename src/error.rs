@@ -1,7 +1,7 @@
 use std::fmt::{Display, Formatter};
 
 use poise::serenity_prelude::Error as BotErr;
-use sqlx::error::DatabaseError;
+use sqlx::error::{DatabaseError, Error as SqlxErr};
 
 pub type AppResult<T> = Result<T, AppError>;
 
@@ -17,12 +17,18 @@ impl Display for AppError {
     }
 }
 
-pub trait MapDatabaseError<T> {
-    fn map_database_error(self) -> Result<T, AppError>;
+pub trait MapError<T> {
+    fn map_app_err(self) -> Result<T, AppError>;
 }
 
-impl<T> MapDatabaseError<T> for Result<T, sqlx::error::Error> {
-    fn map_database_error(self) -> Result<T, AppError> {
+impl<T> MapError<T> for Result<T, SqlxErr> {
+    fn map_app_err(self) -> Result<T, AppError> {
         self.map_err(|err| AppError::DatabaseError(err.into_database_error()))
+    }
+}
+
+impl<T> MapError<T> for Result<T, BotErr> {
+    fn map_app_err(self) -> Result<T, AppError> {
+        self.map_err(AppError::BotError)
     }
 }

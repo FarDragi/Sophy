@@ -1,15 +1,16 @@
-use poise::serenity_prelude::Message;
+use poise::serenity_prelude::{Context, CreateEmbed, Message};
 
 use crate::{
+    constants::colors,
     database::functions::xp::{add_xp, level_up},
-    error::AppResult,
+    error::{AppResult, MapError},
     states::States,
-    utils::message::IsBotMessage,
+    utils::{message::IsBotMessage, user::GetUserNick},
 };
 
 const LEVELS: [i64; 200] = get_levels();
 
-pub async fn level_module_run(message: &Message, states: &States) -> AppResult<()> {
+pub async fn level_module_run(ctx: &Context, message: &Message, states: &States) -> AppResult<()> {
     if message.is_bot_message() {
         return Ok(());
     }
@@ -22,10 +23,29 @@ pub async fn level_module_run(message: &Message, states: &States) -> AppResult<(
     if let Some(xp) = result {
         if let Some((new_level, new_progress)) = is_level_up(xp.level as usize, xp.progress) {
             if level_up(db, user_id.0, new_level, new_progress).await? {
-                // enviar mensagem de level up
+                send_level_up(ctx, message, new_level).await?;
             }
         }
     }
+
+    Ok(())
+}
+
+async fn send_level_up(ctx: &Context, message: &Message, new_level: i32) -> AppResult<()> {
+    let mut embed = CreateEmbed::default();
+    embed
+        .title(format!(
+            "{} level up to {}!",
+            message.get_user_nick(ctx).await,
+            new_level
+        ))
+        .color(colors::PURPLE);
+
+    message
+        .channel_id
+        .send_message(ctx, |x| x.set_embed(embed))
+        .await
+        .map_app_err()?;
 
     Ok(())
 }
