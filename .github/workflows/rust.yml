@@ -3,11 +3,16 @@ name: Build and Clippy
 on:
   push:
     branches: [ master ]
+    paths:
+      - 'bot/**'
   pull_request:
     branches: [ master ]
+    paths:
+      - 'bot/**'
 
 env:
   CARGO_TERM_COLOR: always
+  WORKING_DIR: ./bot
 
 jobs:
   build:
@@ -28,6 +33,8 @@ jobs:
 
     - name: Build
       run: cargo build --verbose
+      working-directory: ${{WORKING_DIR}}
+      
 
   clippy:
 
@@ -47,3 +54,4 @@ jobs:
 
     - name: Clippy
       run: cargo clippy --verbose
+      working-directory: ${{WORKING_DIR}}
