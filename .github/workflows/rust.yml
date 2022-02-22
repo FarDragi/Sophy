@@ -1,4 +1,4 @@
-name: Build and Clippy
+name: Rust
 
 on:
   workflow_dispatch:
@@ -36,7 +36,6 @@ jobs:
       run: cargo build --verbose
       working-directory: ${{env.WORKING_DIR}}
       
-
   clippy:
 
     runs-on: ubuntu-latest
