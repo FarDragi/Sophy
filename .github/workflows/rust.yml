@@ -33,7 +33,7 @@ jobs:
 
     - name: Build
       run: cargo build --verbose
-      working-directory: ${{WORKING_DIR}}
+      working-directory: ${{env.WORKING_DIR}}
       
 
   clippy:
@@ -54,4 +54,4 @@ jobs:
 
     - name: Clippy
       run: cargo clippy --verbose
-      working-directory: ${{WORKING_DIR}}
+      working-directory: ${{env.WORKING_DIR}}
