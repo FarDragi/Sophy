@@ -2,7 +2,10 @@ module fardragi/sophy
 
 go 1.17
 
-require github.com/gin-gonic/gin v1.7.7
+require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/gin-gonic/gin v1.7.7
+)
 
 require (
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
