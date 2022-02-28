@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  database:
+    image: postgres:14-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${APP_DATABASE_PASSWORD}
+      POSTGRES_DB: sophy
+    volumes:
+      - database:/var/lib/postgresql/data
+
+volumes:
+  database:
