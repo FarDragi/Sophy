@@ -1,6 +1,7 @@
 package database
 
 import (
+	"fardragi/sophy/grpc/config"
 	"time"
 
 	"gorm.io/driver/postgres"
@@ -9,8 +10,8 @@ import (
 
 var Connection *gorm.DB
 
-func Connect() {
-	db, err := gorm.Open(postgres.Open(""), &gorm.Config{})
+func Connect(config config.Model) {
+	db, err := gorm.Open(postgres.Open(config.DatabaseUrl), &gorm.Config{})
 
 	if err != nil {
 		panic("Fail start database")
@@ -24,8 +25,8 @@ func Connect() {
 
 	configDb.SetConnMaxIdleTime(10)
 	configDb.SetMaxOpenConns(30)
-	configDb.SetConnMaxIdleTime(time.Hour * 3)
-	configDb.SetConnMaxLifetime(time.Hour * 10)
+	configDb.SetConnMaxIdleTime(time.Minute * 30)
+	configDb.SetConnMaxLifetime(time.Hour * 3)
 
 	Connection = db
 }

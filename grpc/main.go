@@ -3,15 +3,19 @@ package main
 import (
 	"net"
 
+	"fardragi/sophy/grpc/config"
 	"fardragi/sophy/grpc/database"
 	"fardragi/sophy/grpc/pb"
 	"fardragi/sophy/grpc/services"
 
+	_ "github.com/joho/godotenv/autoload"
 	"google.golang.org/grpc"
 )
 
 func main() {
-	database.Connect()
+	config := config.Setup()
+
+	database.Connect(config)
 
 	conn, err := net.Listen("tcp", ":8020")
 
