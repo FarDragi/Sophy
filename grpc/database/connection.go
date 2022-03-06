@@ -32,5 +32,5 @@ func Connect(config config.Model) {
 }
 
 func Migrate() {
-	Connection.AutoMigrate()
+	Connection.AutoMigrate(&User{}, &GlobalXp{})
 }

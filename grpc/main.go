@@ -5,8 +5,7 @@ import (
 
 	"fardragi/sophy/grpc/config"
 	"fardragi/sophy/grpc/database"
-	"fardragi/sophy/grpc/pb"
-	"fardragi/sophy/grpc/services"
+	"fardragi/sophy/grpc/servers"
 
 	_ "github.com/joho/godotenv/autoload"
 	"google.golang.org/grpc"
@@ -16,6 +15,7 @@ func main() {
 	config := config.Setup()
 
 	database.Connect(config)
+	database.Migrate()
 
 	conn, err := net.Listen("tcp", ":8020")
 
@@ -25,7 +25,7 @@ func main() {
 
 	app := grpc.NewServer()
 
-	pb.RegisterBotServer(app, &services.BotServer{})
+	servers.RegisterXpServer(app)
 
 	app.Serve(conn)
 }
