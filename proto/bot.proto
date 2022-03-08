@@ -1,6 +1,7 @@
 syntax = "proto3";
 
-option go_package = "pb/xp";
+option go_package = "/pb";
+package bot;
 
 message AddGlobalXp {
     string token = 1;
@@ -13,6 +14,6 @@ message LevelUp {
     bool level_up = 2;
 }
 
-service Xp {
+service Bot {
     rpc AddUserGlobalXp (AddGlobalXp) returns (LevelUp) {}
 }
