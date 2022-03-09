@@ -1,6 +1,8 @@
 use poise::serenity_prelude::{Context, CreateEmbed, Message};
+use tonic::Request;
 
 use crate::{
+    api::core::bot_client::AddGlobalXp,
     constants::colors,
     error::{AppResult, MapError},
     states::States,
@@ -16,16 +18,26 @@ pub async fn level_module_run(ctx: &Context, message: &Message, states: &States)
 
     let user_id = &message.author.id;
 
-    // let db = states.get_database();
-    // let result = add_xp(db, user_id.0, 1).await?;
+    let request = Request::new(AddGlobalXp {
+        count: 1,
+        discord_id: user_id.to_string(),
+        token: "".to_owned(),
+    });
 
-    // if let Some(xp) = result {
-    //     if let Some((new_level, new_progress)) = is_level_up(xp.level as usize, xp.progress) {
-    //         if level_up(db, user_id.0, new_level, new_progress).await? {
-    //             send_level_up(ctx, message, new_level).await?;
-    //         }
-    //     }
-    // }
+    let result = states
+        .grpc
+        .bot
+        .lock()
+        .await
+        .add_user_global_xp(request)
+        .await;
+
+    if let Ok(response) = result {
+        let level = response.into_inner();
+        if level.level_up {
+            send_level_up(ctx, message, new_level).await?;
+        }
+    }
 
     Ok(())
 }

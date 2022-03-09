@@ -687,9 +687,9 @@ dependencies = [
 
 [[package]]
 name = "mio"
-version = "0.7.14"
+version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8067b404fe97c70829f082dec8bcf4f71225d7eaea1d8645349cb76fa06205cc"
+checksum = "ba272f85fa0b41fc91872be579b3bbe0f56b792aa361a380eb669469f68dafb2"
 dependencies = [
  "libc",
  "log",
@@ -862,11 +862,12 @@ checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
 [[package]]
 name = "poise"
 version = "0.1.0"
-source = "git+https://github.com/kangalioo/poise.git?rev=a28b0193ab032aaedb6b383d1be0d717f9dcf775#a28b0193ab032aaedb6b383d1be0d717f9dcf775"
+source = "git+https://github.com/kangalioo/poise.git?rev=0fc5d54#0fc5d548e32fc7e3c8ea490afe95db00ec17ec24"
 dependencies = [
  "async-trait",
  "futures-core",
  "futures-util",
+ "log",
  "once_cell",
  "poise_macros",
  "regex",
@@ -877,7 +878,7 @@ dependencies = [
 [[package]]
 name = "poise_macros"
 version = "0.1.0"
-source = "git+https://github.com/kangalioo/poise.git?rev=a28b0193ab032aaedb6b383d1be0d717f9dcf775#a28b0193ab032aaedb6b383d1be0d717f9dcf775"
+source = "git+https://github.com/kangalioo/poise.git?rev=0fc5d54#0fc5d548e32fc7e3c8ea490afe95db00ec17ec24"
 dependencies = [
  "darling",
  "proc-macro2",
@@ -1267,7 +1268,6 @@ dependencies = [
  "tokio",
  "tonic",
  "tonic-build",
- "typed-builder",
 ]
 
 [[package]]
@@ -1364,9 +1364,9 @@ checksum = "cda74da7e1a664f795bb1f8a87ec406fb89a02522cf6e50620d016add6dbbf5c"
 
 [[package]]
 name = "tokio"
-version = "1.16.1"
+version = "1.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0c27a64b625de6d309e8c57716ba93021dccf1b3b5c97edd6d3dd2d2135afc0a"
+checksum = "2af73ac49756f3f7c01172e34a23e5d0216f6c32333757c2c61feb2bbff5a5ee"
 dependencies = [
  "bytes",
  "libc",
@@ -1374,6 +1374,7 @@ dependencies = [
  "mio",
  "num_cpus",
  "pin-project-lite",
+ "socket2",
  "tokio-macros",
  "winapi",
 ]
@@ -1601,17 +1602,6 @@ dependencies = [
  "url",
  "utf-8",
  "webpki",
-]
-
-[[package]]
-name = "typed-builder"
-version = "0.9.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a46ee5bd706ff79131be9c94e7edcb82b703c487766a114434e5790361cf08c5"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
 ]
 
 [[package]]

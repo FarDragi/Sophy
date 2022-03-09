@@ -29,5 +29,5 @@ extern crate tonic;
 async fn main() {
     bootstrap_logs();
     let config = bootstrap_config();
-    bootstrap_bot(&config).await;
+    bootstrap_bot(&config).await.expect("Fail start bot");
 }

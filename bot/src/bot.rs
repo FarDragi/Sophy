@@ -7,13 +7,15 @@ use poise::{
 use tokio::{sync::Mutex, time::sleep};
 
 use crate::{
+    api::core::bootstrap_grpc_bot_client,
     commands::get_commands,
     config::Config,
+    error::AppResult,
     events::event_listener,
-    states::{shard::ShardsLatency, States},
+    states::{grpc::GrpcServices, shard::ShardsLatency, States},
 };
 
-pub async fn bootstrap_bot(config: &Config) {
+pub async fn bootstrap_bot(config: &Config) -> AppResult<()> {
     let options = FrameworkOptions {
         commands: get_commands(),
         listener: |ctx, event, framework, states| {
@@ -33,12 +35,19 @@ pub async fn bootstrap_bot(config: &Config) {
 
                 shard_latency(framework.shard_manager(), shards_latency.clone());
 
-                Ok(States { shards_latency })
+                Ok(States {
+                    shards_latency,
+                    grpc: GrpcServices {
+                        bot: Mutex::new(bootstrap_grpc_bot_client().await?),
+                    },
+                })
             })
         })
         .run_autosharded()
         .await
         .expect("Fail start bot client");
+
+    Ok(())
 }
 
 fn bot_info(bot: &Ready) {

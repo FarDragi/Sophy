@@ -13,9 +13,8 @@ serde = "1.0.136"
 env_logger = "0.9.0"
 log = "0.4.14"
 chrono = "0.4.19"
-typed-builder = "0.9.1"
-poise = { git = "https://github.com/kangalioo/poise.git", rev = "a28b0193ab032aaedb6b383d1be0d717f9dcf775" }
-tokio = { version = "1.16.1", features = ["macros", "rt-multi-thread", "sync"] }
+poise = { git = "https://github.com/kangalioo/poise.git", rev = "0fc5d54" }
+tokio = { version = "1.17.0", features = ["macros", "rt-multi-thread", "sync"] }
 figment = { version = "0.10.6", features = ["env", "toml"] }
 tonic = "0.6.2"
 prost = "0.9.0"
