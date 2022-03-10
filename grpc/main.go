@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net"
 
 	"fardragi/sophy/grpc/config"
@@ -17,7 +18,7 @@ func main() {
 	database.Connect(config)
 	database.Migrate()
 
-	conn, err := net.Listen("tcp", ":8020")
+	conn, err := net.Listen("tcp", fmt.Sprintf(":%s", config.Port))
 
 	if err != nil {
 		panic("Falha ao iniciar o tpc")

@@ -17,3 +17,9 @@ type GlobalXp struct {
 	Level     int32  `gorm:"not null;default:1"`
 	ModelTimes
 }
+
+type Guild struct {
+	DiscordId     string `gorm:"primaryKey;not null;type:char(18)"`
+	LevelUpFormat string `gorm:"not null"`
+	ModelTimes
+}

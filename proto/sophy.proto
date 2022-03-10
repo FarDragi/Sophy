@@ -13,6 +13,25 @@ message GlobalXpResponse {
     bool level_up = 2;
 }
 
+message GuildConfigRequest {
+    string token = 1;
+    string discord_id = 2;
+}
+
+message GuildConfigResponse {
+    string level_up_format = 1;
+}
+
+message SetGuildResponse {
+
+}
+
+message SetGuildLevelUpFormatRequest {
+    string value = 1;
+}
+
 service Sophy {
     rpc AddUserGlobalXp (GlobalXpRequest) returns (GlobalXpResponse) {}
+    rpc GetGuildConfig (GuildConfigRequest) returns (GuildConfigResponse) {}
+    rpc SetGuildLevelUpFormat (SetGuildLevelUpFormatRequest) returns (SetGuildResponse) {}
 }

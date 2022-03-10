@@ -8,6 +8,8 @@ import (
 	"fardragi/sophy/grpc/utils"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func RegisterSophyServer(server *grpc.Server) {
@@ -19,17 +21,20 @@ type BotServer struct {
 }
 
 func (s *BotServer) AddUserGlobalXp(ctx context.Context, req *pb.GlobalXpRequest) (*pb.GlobalXpResponse, error) {
-	level, err := database.GlobalXpAddOrCreate(req.GetDiscordId(), 1)
+	globalXp := database.GlobalXp{
+		DiscordId: req.GetDiscordId(),
+	}
+	globalXp, err := globalXp.AddOrCreate(1)
 
 	if err != nil {
-		return &pb.GlobalXpResponse{}, err
+		return &pb.GlobalXpResponse{}, status.Error(codes.Internal, err.Error())
 	}
 
-	if newLevel, newProgress, levelUp := utils.IsLevelUp(level.Level, level.Progress); levelUp {
-		level, err := level.LevelUp(newLevel, newProgress)
+	if newLevel, newProgress, levelUp := utils.IsLevelUp(globalXp.Level, globalXp.Progress); levelUp {
+		level, err := globalXp.LevelUp(newLevel, newProgress)
 
 		if err != nil {
-			return &pb.GlobalXpResponse{}, err
+			return &pb.GlobalXpResponse{}, status.Error(codes.Internal, err.Error())
 		}
 
 		return &pb.GlobalXpResponse{
@@ -40,5 +45,24 @@ func (s *BotServer) AddUserGlobalXp(ctx context.Context, req *pb.GlobalXpRequest
 
 	return &pb.GlobalXpResponse{
 		LevelUp: false,
+	}, status.Error(codes.Aborted, "Cooldown")
+}
+
+func (s *BotServer) GetGuildConfig(ctx context.Context, req *pb.GuildConfigRequest) (*pb.GuildConfigResponse, error) {
+	guild := database.Guild{
+		DiscordId: req.GetDiscordId(),
+	}
+	guild, err := guild.GetConfig()
+
+	if err != nil {
+		return &pb.GuildConfigResponse{}, status.Error(codes.Internal, err.Error())
+	}
+
+	return &pb.GuildConfigResponse{
+		LevelUpFormat: guild.LevelUpFormat,
 	}, nil
+}
+
+func (s *BotServer) SetGuildLevelUpFormat(ctx context.Context, req *pb.SetGuildLevelUpFormatRequest) (*pb.SetGuildResponse, error) {
+	return &pb.SetGuildResponse{}, status.Error(codes.Unimplemented, "")
 }
