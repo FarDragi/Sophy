@@ -9,6 +9,8 @@ mod logs;
 mod states;
 mod utils;
 
+use std::sync::Arc;
+
 use bot::bootstrap_bot;
 use config::bootstrap_config;
 use logs::bootstrap_logs;
@@ -28,6 +30,6 @@ extern crate tonic;
 #[tokio::main]
 async fn main() {
     bootstrap_logs();
-    let config = bootstrap_config();
-    bootstrap_bot(&config).await.expect("Fail start bot");
+    let config = Arc::new(bootstrap_config());
+    bootstrap_bot(config.clone()).await.expect("Fail start bot");
 }

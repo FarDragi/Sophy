@@ -15,7 +15,7 @@ use crate::{
     states::{GrpcServices, ShardsLatency, States},
 };
 
-pub async fn bootstrap_bot(config: &Config) -> AppResult<()> {
+pub async fn bootstrap_bot(config: Arc<Config>) -> AppResult<()> {
     let options = FrameworkOptions {
         commands: get_commands(),
         listener: |ctx, event, framework, states| {
@@ -41,7 +41,7 @@ pub async fn bootstrap_bot(config: &Config) -> AppResult<()> {
                 Ok(States {
                     shards_latency,
                     grpc: GrpcServices {
-                        bot: Mutex::new(bootstrap_grpc_bot_client().await?),
+                        bot: Mutex::new(bootstrap_grpc_bot_client(&config).await?),
                     },
                 })
             })

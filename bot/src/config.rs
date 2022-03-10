@@ -6,14 +6,14 @@ use figment::{
 #[derive(Default, Debug, Deserialize, Serialize)]
 pub struct Config {
     pub token: String,
-    pub database_url: String,
+    pub grpc_url: String,
 }
 
 impl Config {
     pub fn figment() -> Figment {
         Figment::new()
             .merge(Env::prefixed("SOPHY_"))
-            .merge(Toml::file("Sophy.toml").nested())
+            .merge(Toml::file("Sophy.toml"))
     }
 }
 
