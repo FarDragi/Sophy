@@ -1,7 +1,7 @@
 use std::{collections::HashMap, sync::Arc, time::Duration};
 
 use poise::{
-    serenity_prelude::{Mutex as SerenityMutex, Ready, ShardManager},
+    serenity_prelude::{GatewayIntents, Mutex as SerenityMutex, Ready, ShardManager},
     Framework, FrameworkOptions,
 };
 use tokio::{sync::Mutex, time::sleep};
@@ -27,6 +27,9 @@ pub async fn bootstrap_bot(config: &Config) -> AppResult<()> {
     Framework::build()
         .options(options)
         .token(&config.token)
+        .client_settings(|s| {
+            s.intents(GatewayIntents::non_privileged() - GatewayIntents::MESSAGE_CONTENT)
+        })
         .user_data_setup(move |_ctx, bot, framework| {
             Box::pin(async move {
                 bot_info(bot);

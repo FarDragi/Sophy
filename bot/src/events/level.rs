@@ -9,8 +9,6 @@ use crate::{
     utils::{message::IsBotMessage, user::GetUserNick},
 };
 
-const LEVELS: [i64; 200] = get_levels();
-
 pub async fn level_module_run(ctx: &Context, message: &Message, states: &States) -> AppResult<()> {
     if message.is_bot_message() {
         return Ok(());
@@ -58,43 +56,4 @@ async fn send_level_up(ctx: &Context, message: &Message, new_level: i32) -> AppR
         .map_app_err()?;
 
     Ok(())
-}
-
-fn is_level_up(level: usize, progress: i64) -> Option<(i32, i64)> {
-    let progress_target = LEVELS[level];
-    if progress >= progress_target {
-        Some((level as i32 + 1, progress - progress_target))
-    } else {
-        None
-    }
-}
-
-const fn calc_level(level: i64) -> i64 {
-    let progress_multiplier = ((level - 1) / 5 + 1) * 20;
-    let level_multiplier = ((level - 1) % 5) + 1;
-    let base = {
-        let mut result = 0;
-        let mut i = 0;
-        let i_target = ((level - 1) / 5) + 1;
-
-        while i < i_target {
-            result += 100 * i;
-            i += 1;
-        }
-        result
-    };
-
-    (progress_multiplier * level_multiplier) + base
-}
-
-const fn get_levels() -> [i64; 200] {
-    let mut levels = [0; 200];
-
-    let mut i = 0;
-    while i < 200 {
-        levels[i] = calc_level((i + 1) as i64);
-        i += 1;
-    }
-
-    levels
 }
