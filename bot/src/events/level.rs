@@ -2,7 +2,7 @@ use poise::serenity_prelude::{Context, CreateEmbed, Message};
 use tonic::Request;
 
 use crate::{
-    api::core::bot_client::AddGlobalXp,
+    api::grpc::sophy::GlobalXpRequest,
     constants::colors,
     error::{AppResult, MapError},
     states::States,
@@ -18,8 +18,7 @@ pub async fn level_module_run(ctx: &Context, message: &Message, states: &States)
 
     let user_id = &message.author.id;
 
-    let request = Request::new(AddGlobalXp {
-        count: 1,
+    let request = Request::new(GlobalXpRequest {
         discord_id: user_id.to_string(),
         token: "".to_owned(),
     });
@@ -35,7 +34,7 @@ pub async fn level_module_run(ctx: &Context, message: &Message, states: &States)
     if let Ok(response) = result {
         let level = response.into_inner();
         if level.level_up {
-            send_level_up(ctx, message, new_level).await?;
+            send_level_up(ctx, message, level.new_level).await?;
         }
     }
 
@@ -62,9 +61,9 @@ async fn send_level_up(ctx: &Context, message: &Message, new_level: i32) -> AppR
 }
 
 fn is_level_up(level: usize, progress: i64) -> Option<(i32, i64)> {
-    let progres_target = LEVELS[level];
-    if progress >= progres_target {
-        Some((level as i32 + 1, progress - progres_target))
+    let progress_target = LEVELS[level];
+    if progress >= progress_target {
+        Some((level as i32 + 1, progress - progress_target))
     } else {
         None
     }

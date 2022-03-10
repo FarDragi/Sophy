@@ -1,8 +1,8 @@
 use tokio::sync::Mutex;
 use tonic::transport::Channel;
 
-use crate::api::core::bot_client::bot_client::BotClient;
+use crate::api::grpc::sophy::sophy_client::SophyClient;
 
 pub struct GrpcServices {
-    pub bot: Mutex<BotClient<Channel>>,
+    pub bot: Mutex<SophyClient<Channel>>,
 }

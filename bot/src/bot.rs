@@ -7,7 +7,7 @@ use poise::{
 use tokio::{sync::Mutex, time::sleep};
 
 use crate::{
-    api::core::bootstrap_grpc_bot_client,
+    api::grpc::bootstrap_grpc_bot_client,
     commands::get_commands,
     config::Config,
     error::AppResult,
