@@ -12,7 +12,7 @@ use crate::{
     config::Config,
     error::AppResult,
     events::event_listener,
-    states::{grpc::GrpcServices, shard::ShardsLatency, States},
+    states::{GrpcServices, ShardsLatency, States},
 };
 
 pub async fn bootstrap_bot(config: &Config) -> AppResult<()> {
