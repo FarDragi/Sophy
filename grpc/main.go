@@ -25,7 +25,7 @@ func main() {
 
 	app := grpc.NewServer()
 
-	servers.RegisterXpServer(app)
+	servers.RegisterSophyServer(app)
 
 	app.Serve(conn)
 }
