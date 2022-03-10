@@ -1,16 +1,16 @@
 use poise::serenity_prelude::{Context, CreateEmbed, Message};
-use tonic::Request;
+use tonic::{Code, Request};
 
 use crate::{
     api::grpc::sophy::GlobalXpRequest,
     constants::colors,
     error::{AppResult, MapError},
     states::States,
-    utils::{message::IsBotMessage, user::GetUserNick},
+    utils::MessageExtension,
 };
 
 pub async fn level_module_run(ctx: &Context, message: &Message, states: &States) -> AppResult<()> {
-    if message.is_bot_message() {
+    if message.is_bot_message() || !message.is_guild() {
         return Ok(());
     }
 
@@ -29,10 +29,17 @@ pub async fn level_module_run(ctx: &Context, message: &Message, states: &States)
         .add_user_global_xp(request)
         .await;
 
-    if let Ok(response) = result {
-        let level = response.into_inner();
-        if level.level_up {
-            send_level_up(ctx, message, level.new_level).await?;
+    match result {
+        Ok(response) => {
+            let level = response.into_inner();
+            if level.level_up {
+                send_level_up(ctx, message, level.new_level).await?;
+            }
+        }
+        Err(status) => {
+            if status.code() == Code::Aborted {
+                debug!("{} is in cooldown", message.author.tag());
+            }
         }
     }
 

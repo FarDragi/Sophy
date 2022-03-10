@@ -1,5 +1,3 @@
-mod local;
-
 use std::io::Write;
 
 use chrono::Utc;
@@ -17,6 +15,8 @@ pub fn bootstrap_logs() {
             set_level_color(&mut level_style, &level);
 
             let date = Utc::now();
+            let mut date_style = buf.style();
+            date_style.set_color(Color::Rgb(191, 122, 255));
 
             let mut target_style = buf.style();
             target_style.set_color(Color::Cyan);
@@ -24,7 +24,7 @@ pub fn bootstrap_logs() {
             writeln!(
                 buf,
                 "[{}] [{}] [{}]: {}",
-                date.format("%Y-%m-%d %H:%M:%S"),
+                date_style.value(date.format("%Y-%m-%d %H:%M:%S")),
                 target_style.value(record.target()),
                 level_style.value(level),
                 record.args()
@@ -34,6 +34,7 @@ pub fn bootstrap_logs() {
         .filter_module("poise", LevelFilter::Warn)
         .filter_module("serenity", LevelFilter::Warn)
         .filter_module("sophy_bot", LevelFilter::Debug)
+        .filter_module("tonic", LevelFilter::Warn)
         .init();
 }
 
