@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option go_package = "/pb";
+package sophy;
+
+message GlobalXpRequest {
+    string token = 1;
+    string discord_id = 2;
+}
+
+message GlobalXpResponse {
+    int32 new_level = 1;
+    bool level_up = 2;
+}
+
+service Sophy {
+    rpc AddUserGlobalXp (GlobalXpRequest) returns (GlobalXpResponse) {}
+}
