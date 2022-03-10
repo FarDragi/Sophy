@@ -1,7 +1,3 @@
-use bot::bootstrap_bot;
-use config::bootstrap_config;
-use logs::bootstrap_logs;
-
 mod api;
 mod bot;
 mod commands;
@@ -12,6 +8,10 @@ mod events;
 mod logs;
 mod states;
 mod utils;
+
+use bot::bootstrap_bot;
+use config::bootstrap_config;
+use logs::bootstrap_logs;
 
 #[macro_use]
 extern crate poise;
