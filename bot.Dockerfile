@@ -4,7 +4,7 @@ RUN apk add openssl musl-dev protoc
 
 WORKDIR /app
 COPY ./bot .
-COPY ./proto ../proto
+COPY ./proto /proto
 
 RUN cargo build --release
 
