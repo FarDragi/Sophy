@@ -17,8 +17,8 @@ services:
 
   bot:
     build:
-      context: ./bot
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: bot.Dockerfile
     restart: always
     depends_on:
       - grpc
@@ -28,8 +28,8 @@ services:
 
   grpc:
     build:
-      context: ./grpc
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: grpc.Dockerfile
     restart: always
     depends_on:
       database:

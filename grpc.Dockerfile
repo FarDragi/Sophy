@@ -1,7 +1,7 @@
 FROM golang:1.17-alpine3.15 as builder
 
 WORKDIR /app
-COPY . .
+COPY ./grpc .
 
 RUN go build
 
