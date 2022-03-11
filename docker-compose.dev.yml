@@ -1,5 +1,0 @@
-services:
-  bot:
-    build:
-      context: ./bot
-      dockerfile: Dockerfile

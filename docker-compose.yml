@@ -9,6 +9,32 @@ services:
       POSTGRES_DB: sophy
     volumes:
       - database:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  bot:
+    build:
+      context: ./bot
+      dockerfile: Dockerfile
+    depends_on:
+      - grpc
+    environment:
+      - SOPHY_TOKEN=${APP_BOT_TOKEN}
+      - SOPHY_GRPC_URL=http://grpc:6000
+
+  grpc:
+    build:
+      context: ./grpc
+      dockerfile: Dockerfile
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      - APP_GRPC_PORT=6000
+      - APP_DATABASE_URL=postgres://postgres:${APP_DATABASE_PASSWORD}@database:5432/sophy
 
 volumes:
   database:
