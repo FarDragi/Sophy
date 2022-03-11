@@ -1,5 +1,7 @@
 FROM rust:1.59.0-alpine3.15 as builder
 
+RUN apk add openssl
+
 WORKDIR /app
 COPY ./bot .
 COPY ./proto /proto
