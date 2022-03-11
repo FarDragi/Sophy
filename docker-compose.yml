@@ -2,7 +2,7 @@ version: '3'
 
 services:
   database:
-    image: postgres:14-alpine
+    image: postgres:14-alpine3.15
     restart: always
     environment:
       POSTGRES_PASSWORD: ${APP_DATABASE_PASSWORD}
@@ -19,6 +19,7 @@ services:
     build:
       context: ./bot
       dockerfile: Dockerfile
+    restart: always
     depends_on:
       - grpc
     environment:
@@ -29,6 +30,7 @@ services:
     build:
       context: ./grpc
       dockerfile: Dockerfile
+    restart: always
     depends_on:
       database:
         condition: service_healthy

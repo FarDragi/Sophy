@@ -1,0 +1,5 @@
+.env
+example.env
+build-script.bat
+.gitignore
+.vscode
