@@ -1,6 +1,7 @@
 FROM rust:1.59.0-alpine3.15 as builder
 
 RUN apk add openssl musl-dev protoc
+RUN rustup component add rustfmt
 
 WORKDIR /app
 COPY ./bot .
