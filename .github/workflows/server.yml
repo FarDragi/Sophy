@@ -12,7 +12,7 @@ on:
       - 'server/**'
 
 env:
-  WORKING_DIR: ./web
+  WORKING_DIR: ./server
 
 jobs:
   build:
