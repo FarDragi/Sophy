@@ -2,7 +2,7 @@ use poise::serenity_prelude::{Context, CreateEmbed, Message};
 use tonic::{Code, Request};
 
 use crate::{
-    api::grpc::sophy::GlobalXpRequest,
+    api::server::sophy::GlobalXpRequest,
     constants::colors,
     error::{AppResult, MapError},
     states::States,
@@ -23,7 +23,7 @@ pub async fn level_module_run(ctx: &Context, message: &Message, states: &States)
 
     let result = states
         .grpc
-        .bot
+        .sophy
         .lock()
         .await
         .add_user_global_xp(request)

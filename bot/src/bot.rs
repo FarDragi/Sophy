@@ -7,7 +7,7 @@ use poise::{
 use tokio::{sync::Mutex, time::sleep};
 
 use crate::{
-    api::grpc::bootstrap_grpc_bot_client,
+    api::server::bootstrap_server_sophy_client,
     commands::get_commands,
     config::Config,
     error::AppResult,
@@ -41,7 +41,7 @@ pub async fn bootstrap_bot(config: Arc<Config>) -> AppResult<()> {
                 Ok(States {
                     shards_latency,
                     grpc: GrpcServices {
-                        bot: Mutex::new(bootstrap_grpc_bot_client(&config).await?),
+                        sophy: Mutex::new(bootstrap_server_sophy_client(&config).await?),
                     },
                 })
             })

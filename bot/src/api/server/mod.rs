@@ -11,7 +11,7 @@ pub mod sophy {
     include_proto!("sophy");
 }
 
-pub async fn bootstrap_grpc_bot_client(config: &Config) -> AppResult<SophyClient<Channel>> {
+pub async fn bootstrap_server_sophy_client(config: &Config) -> AppResult<SophyClient<Channel>> {
     let client = SophyClient::connect(config.grpc_url.clone())
         .await
         .map_app_err()?;
