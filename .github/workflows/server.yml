@@ -18,7 +18,7 @@ jobs:
   build:
     runs_on: ubuntu-latest
 
-  steps:
+    steps:
     - uses: actions/checkout@v2
 
     - name: Set up Go
