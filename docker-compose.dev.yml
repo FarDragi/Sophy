@@ -1,0 +1,6 @@
+services:
+  bot:
+    image: ghcr.io/fardragi/sophy/bot:in-dev
+
+  server:
+    image: ghcr.io/fardragi/sophy/server:in-dev
