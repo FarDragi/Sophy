@@ -4,19 +4,18 @@ on:
   workflow_dispatch:
   push:
     branches: [ master ]
-    paths: 
+    paths:
       - 'web/**'
   pull_request:
     branches: [ master ]
-    paths: 
+    paths:
       - 'web/**'
-      
+
 env:
   WORKING_DIR: ./web
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -25,7 +24,7 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: 16.x
-        
+
     - name: Install
       run: yarn
       working-directory: ${{env.WORKING_DIR}}
