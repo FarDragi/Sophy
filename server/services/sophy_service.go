@@ -1,11 +1,11 @@
-package servers
+package services
 
 import (
 	"context"
 
-	"fardragi/sophy/grpc/database"
-	"fardragi/sophy/grpc/pb"
-	"fardragi/sophy/grpc/utils"
+	"fardragi/sophy/server/database"
+	"fardragi/sophy/server/pb"
+	"fardragi/sophy/server/utils"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"

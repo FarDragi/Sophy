@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"net"
 
-	"fardragi/sophy/grpc/config"
-	"fardragi/sophy/grpc/database"
-	"fardragi/sophy/grpc/servers"
+	"fardragi/sophy/server/config"
+	"fardragi/sophy/server/database"
+	"fardragi/sophy/server/services"
 
 	_ "github.com/joho/godotenv/autoload"
 	"google.golang.org/grpc"
@@ -26,7 +26,7 @@ func main() {
 
 	app := grpc.NewServer()
 
-	servers.RegisterSophyServer(app)
+	services.RegisterSophyServer(app)
 
 	app.Serve(conn)
 }

@@ -1,7 +1,7 @@
 package database
 
 import (
-	"fardragi/sophy/grpc/config"
+	"fardragi/sophy/server/config"
 	"time"
 
 	"gorm.io/driver/postgres"

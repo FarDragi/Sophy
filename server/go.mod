@@ -1,4 +1,4 @@
-module fardragi/sophy/grpc
+module fardragi/sophy/server
 
 go 1.17
 
