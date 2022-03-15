@@ -1,5 +1,5 @@
 use poise::serenity_prelude::{Context, CreateEmbed, Message};
-use tonic::{Code, Request};
+use tonic::Code;
 
 use crate::{
     api::server::sophy::{GlobalXpRequest, GuildConfigRequest},
@@ -17,18 +17,13 @@ pub async fn level_module_run(ctx: &Context, message: &Message, states: &States)
 
     let user_id = &message.author.id;
 
-    let request = Request::new(GlobalXpRequest {
+    let request = GlobalXpRequest {
         discord_id: user_id.to_string(),
         token: "".to_owned(),
-    });
+    };
 
-    let result = states
-        .grpc
-        .sophy
-        .lock()
-        .await
-        .add_user_global_xp(request)
-        .await;
+    let mut client = states.grpc.sophy.lock().await;
+    let result = client.add_user_global_xp(request).await;
 
     match result {
         Ok(response) => {
@@ -53,18 +48,14 @@ async fn send_level_up(
     new_level: i32,
     states: &States,
 ) -> AppResult<()> {
-    let guild_config = states
-        .grpc
-        .sophy
-        .lock()
-        .await
-        .get_guild_config(GuildConfigRequest {
-            token: "".to_owned(),
-            discord_id: message.guild_id.unwrap().to_string(),
-        })
-        .await
-        .map_app_err()?
-        .into_inner();
+    let request = GuildConfigRequest {
+        token: "".to_owned(),
+        discord_id: message.guild_id.unwrap().to_string(),
+    };
+
+    let mut client = states.grpc.sophy.lock().await;
+    let result = client.get_guild_config(request).await;
+    let guild_config = result.map_app_err()?.into_inner();
 
     let mut args = ExtraArgs::default();
     args.add_arg("level".to_owned(), new_level.to_string());
