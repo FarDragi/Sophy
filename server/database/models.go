@@ -20,6 +20,6 @@ type GlobalXp struct {
 
 type Guild struct {
 	DiscordId     string `gorm:"primaryKey;not null;type:char(18)"`
-	LevelUpFormat string `gorm:"not null"`
+	LevelUpFormat string `gorm:"not null;default:%user% level up to %level%!"`
 	ModelTimes
 }

@@ -1,14 +1,15 @@
 use std::fmt::{Display, Formatter};
 
 use poise::serenity_prelude::Error as BotErr;
-use tonic::transport::Error as TonicErr;
+use tonic::{transport::Error as TonicErr, Status as GrpcErr};
 
 pub type AppResult<T> = Result<T, AppError>;
 
 #[derive(Debug)]
 pub enum AppError {
-    BotError(BotErr),
-    TonicError(TonicErr),
+    Bot(BotErr),
+    Tonic(TonicErr),
+    Grpc(GrpcErr),
 }
 
 impl Display for AppError {
@@ -23,12 +24,18 @@ pub trait MapError<T> {
 
 impl<T> MapError<T> for Result<T, BotErr> {
     fn map_app_err(self) -> Result<T, AppError> {
-        self.map_err(AppError::BotError)
+        self.map_err(AppError::Bot)
     }
 }
 
 impl<T> MapError<T> for Result<T, TonicErr> {
     fn map_app_err(self) -> Result<T, AppError> {
-        self.map_err(AppError::TonicError)
+        self.map_err(AppError::Tonic)
+    }
+}
+
+impl<T> MapError<T> for Result<T, GrpcErr> {
+    fn map_app_err(self) -> Result<T, AppError> {
+        self.map_err(AppError::Grpc)
     }
 }

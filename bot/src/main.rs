@@ -5,6 +5,7 @@ mod config;
 mod constants;
 mod error;
 mod events;
+mod format;
 mod logs;
 mod states;
 mod utils;

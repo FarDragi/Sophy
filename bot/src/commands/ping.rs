@@ -12,7 +12,7 @@ pub async fn ping(ctx: CommandContext<'_>) -> AppResult<()> {
     if let Some(duration) = duration {
         ctx.say(format!("{:?}", duration))
             .await
-            .map_err(AppError::BotError)?;
+            .map_err(AppError::Bot)?;
     }
 
     Ok(())
